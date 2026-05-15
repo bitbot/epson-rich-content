@@ -182,7 +182,12 @@ body { display: block !important; flex-direction: unset !important; }
   display: none;
 }
 
-/* Expanded view — all slides stacked */
+/* Expanded view — whitespace between component sections (matches C2's ~40px module padding) */
+.preview-expanded .ccs-cc-inline-section + .ccs-cc-inline-section {
+  margin-top: 40px !important;
+}
+
+/* Expanded view — all slides stacked with tighter spacing within a carousel group */
 .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block {
   margin-top: 4px !important;
 }
