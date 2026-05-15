@@ -3,6 +3,9 @@
 # 1WS reference source files (local only, not deployed)
 reference/
 
+# Wrangler
+.wrangler/
+
 # Logs
 logs
 *.log
