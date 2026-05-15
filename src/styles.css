@@ -20,6 +20,19 @@ body {
 /* Remove body flex-direction reverse from 1WS subscriber CSS */
 body { display: block !important; flex-direction: unset !important; }
 
+/* Content width constraint — matches 1WS iframe rendering on Staples (~1200px) */
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Carousel dot text hiding — 1WS Slick hides button text; our <a> tags need explicit hiding */
+.ccs-cc-inline .ccs-cc-fc .ccs-slick-dots li a {
+  font-size: 0 !important;
+  line-height: 0 !important;
+  overflow: hidden !important;
+}
+
 /* Carousel arrow replacements (since we don't have the 1WS sprite image) */
 .ccs-cc-inline .ccs-slick-arrow span::before {
   content: "" !important;
