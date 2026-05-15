@@ -5,7 +5,7 @@ var PRODUCTS = [
 function getRoute() {
   var path = window.location.pathname.replace(/^\/+|\/+$/g, '');
   var params = new URLSearchParams(window.location.search);
-  return { path: path || '', expanded: params.get('expanded') === 'all' };
+  return { path: path || '', expanded: params.get('expand') === 'all' || params.get('expanded') === 'all' };
 }
 
 function route() {
@@ -127,24 +127,34 @@ function renderCarouselSection(carousel, expanded) {
 function renderHotspotsSection(hotspots, expanded) {
   var pointsData = JSON.stringify(hotspots.points).replace(/'/g, '&#39;');
 
-  var html = '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">' +
-    '<div class="ccs-hotspots-container">' +
-      '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" data-hotspots-json=\'' + pointsData + '\' />' +
+  if (!expanded) {
+    return '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">' +
+      '<div class="ccs-hotspots-container">' +
+        '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" data-hotspots-json=\'' + pointsData + '\' />' +
+      '</div>' +
     '</div>';
-
-  if (expanded) {
-    html += '<div class="ccs-hotspots-expanded-details">';
-    for (var i = 0; i < hotspots.points.length; i++) {
-      var pt = hotspots.points[i];
-      html += '<div class="ccs-hotspot-expanded-item">' +
-        '<img src="' + pt.popupImage + '" alt="' + pt.popupAlt + '" />' +
-        '<div><h4>' + pt.heading + '</h4><p>' + pt.body + '</p></div>' +
-      '</div>';
-    }
-    html += '</div>';
   }
 
-  html += '</div>';
+  /* Expanded view: render composite image once per hotspot with that hotspot's
+     marker highlighted and its content shown inline below — matches C2's
+     A+ Premium and Hybris expanded preview pattern for Pastel review */
+  var html = '';
+  for (var i = 0; i < hotspots.points.length; i++) {
+    var pt = hotspots.points[i];
+    html += '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">' +
+      '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">' +
+        '<div class="ccs-hotspots ccs-hotspots-default" style="position:relative; display:inline-block; width:100%">' +
+          '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" style="display:block; width:100%" />' +
+          '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none"></div>' +
+        '</div>' +
+        '<div class="ccs-hotspot-expanded-content">' +
+          (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +
+          '<h4>' + pt.heading + '</h4>' +
+          '<p>' + pt.body + '</p>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
   return html;
 }
 

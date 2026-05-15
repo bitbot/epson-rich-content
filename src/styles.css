@@ -154,42 +154,36 @@ body { display: block !important; flex-direction: unset !important; }
   color: #444;
 }
 
-/* Expanded view — hotspot details */
-.ccs-hotspots-expanded-details {
-  max-width: 900px;
-  margin: 20px auto 0;
-  padding: 0 16px;
+/* Expanded view — hotspot instances (one per hotspot, composite image + content) */
+.ccs-hotspots-expanded-instance {
+  margin-bottom: 0;
 }
 
-.ccs-hotspot-expanded-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 16px 0;
-  border-bottom: 1px solid #eee;
+.ccs-hotspot-expanded-content {
+  background: #fff;
+  padding: 20px 24px;
+  max-width: 700px;
 }
 
-.ccs-hotspot-expanded-item:last-child {
-  border-bottom: none;
-}
-
-.ccs-hotspot-expanded-item img {
-  width: 120px;
+.ccs-hotspot-expanded-content img {
+  display: block;
+  max-width: 280px;
   height: auto;
-  flex-shrink: 0;
+  margin-bottom: 12px;
   border-radius: 4px;
 }
 
-.ccs-hotspot-expanded-item h4 {
-  font-size: 1em;
+.ccs-hotspot-expanded-content h4 {
+  font-size: 1.1em;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin: 0 0 6px;
 }
 
-.ccs-hotspot-expanded-item p {
-  font-size: 0.9em;
+.ccs-hotspot-expanded-content p {
+  font-size: 0.95em;
   line-height: 1.5;
-  color: #555;
+  color: #444;
+  margin: 0;
 }
 
 /* Expanded view — all slides stacked */
@@ -203,7 +197,8 @@ body { display: block !important; flex-direction: unset !important; }
   display: none !important;
 }
 
-/* Hide hotspot markers in expanded mode */
-.preview-expanded .ccs-hotspots-point {
+/* In expanded mode, only the active marker is shown per instance (rendered inline).
+   Hide any non-active markers that might exist from interactive init */
+.preview-expanded .ccs-hotspots-point:not(.ccs-hotspots-point-active) {
   display: none !important;
 }
