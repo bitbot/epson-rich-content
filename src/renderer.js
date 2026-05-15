@@ -125,29 +125,25 @@ function renderCarouselSection(carousel, expanded) {
 }
 
 function getExpandedPopupStyle(mx, my) {
-  /* Position the popup card near its marker but clamped within the image.
-     Popup is ~23% of container width (280px in a ~1200px container).
-     We leave ~2% padding from edges. */
-  var popupW = 0.24;  /* popup width as fraction of container */
-  var pad = 0.02;     /* edge padding */
-  var markerGap = 0.03; /* gap between marker and popup edge */
+  /* Position the popup card vertically centered in the container,
+     horizontally placed beside the marker. This keeps the popup fully
+     within bounds without clipping or resizing the container. */
 
-  /* Horizontal: try to center on marker, clamp to [pad, 1-pad-popupW] */
-  var left = mx - popupW / 2;
-  left = Math.max(pad, Math.min(left, 1 - pad - popupW));
-
-  /* Vertical: place below marker if there's room, otherwise above.
-     Estimate popup height as ~35% of container height. */
-  var popupH = 0.40;
-  var top;
-  if (my + markerGap + popupH <= 1 - pad) {
-    top = my + markerGap;
+  /* Horizontal: place popup on the side of the marker with more room */
+  var popupW = 0.30; /* popup width as fraction of container (~360px / 1200px) */
+  var hGap = 0.02;
+  var left;
+  if (mx < 0.5) {
+    /* Marker in left half — place popup to the right of marker */
+    left = mx + hGap;
   } else {
-    top = my - markerGap - popupH;
-    top = Math.max(pad, top);
+    /* Marker in right half — place popup to the left of marker */
+    left = mx - hGap - popupW;
   }
+  /* Clamp horizontal */
+  left = Math.max(0.02, Math.min(left, 1 - 0.02 - popupW));
 
-  return 'left:' + (left * 100).toFixed(1) + '%; top:' + (top * 100).toFixed(1) + '%';
+  return 'left:' + (left * 100).toFixed(1) + '%; top:50%; transform:translateY(-50%)';
 }
 
 function renderHotspotsSection(hotspots, expanded) {

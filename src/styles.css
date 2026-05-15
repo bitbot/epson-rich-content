@@ -155,9 +155,6 @@ body { display: block !important; flex-direction: unset !important; }
 }
 
 /* Expanded view — hotspot instances: static rendering of the "popup open" state */
-.ccs-hotspots-expanded-instance .ccs-hotspots {
-  overflow: hidden;
-}
 
 /* Dim overlay on the composite image */
 .ccs-hotspot-expanded-dim {
@@ -168,7 +165,7 @@ body { display: block !important; flex-direction: unset !important; }
   pointer-events: none;
 }
 
-/* Static popup card — positioned via inline styles computed to stay within bounds */
+/* Static popup card — vertically centered, horizontally beside marker */
 .ccs-hotspot-expanded-popup {
   position: absolute;
   z-index: 4;
@@ -177,31 +174,7 @@ body { display: block !important; flex-direction: unset !important; }
 
 .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip {
   position: relative;
-  width: 280px;
-  max-height: none;
-}
-
-/* Smaller text in expanded static popups to fit within bounds */
-.ccs-hotspot-expanded-popup .qtip-content {
-  padding: 0 12px;
-}
-
-.ccs-hotspot-expanded-popup .qtip-content > div {
-  padding: 10px 0;
-}
-
-.ccs-hotspot-expanded-popup .qtip-content h4 {
-  font-size: 1em;
-}
-
-.ccs-hotspot-expanded-popup .qtip-content p {
-  font-size: 0.85em;
-}
-
-.ccs-hotspot-expanded-popup .qtip-content img {
-  max-width: 100%;
-  max-height: 120px;
-  object-fit: contain;
+  width: 360px;
 }
 
 /* Remove close button in expanded static popups */
