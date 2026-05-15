@@ -1,0 +1,164 @@
+{
+  "product": {
+    "sku": "ET-2980U",
+    "name": "Epson EcoTank® ET-2980U",
+    "fullName": "Epson EcoTank® ET-2980U Wireless All-in-One Supertank Printer",
+    "segment": "Home",
+    "readyPrintPrice": "$14.99"
+  },
+  "hero": {
+    "image": "assets/products/et-2980u/hero.svg",
+    "imageMobile": "assets/products/et-2980u/hero-mobile.svg",
+    "headline": "Print Without Limits.",
+    "subheadline": "Epson EcoTank is the World’s #1 Selling Supertank Printer.",
+    "alt": "Shaq holding #1 Selling Supertank Printer sign with EcoTank ET-2980"
+  },
+  "carousels": [
+    {
+      "id": "product",
+      "label": "EcoTank Product Features",
+      "slides": [
+        {
+          "navLabel": "Incredible Value",
+          "image": "assets/products/et-2980u/slide-01.svg",
+          "heading": "Affordable Color Printing",
+          "body": "Each included set of Epson EcoFit® ink bottles is equivalent to about 80 ink cartridges(1).",
+          "alt": "EcoTank printer with ink bottles showing value comparison"
+        },
+        {
+          "navLabel": "Worry-Free Printing",
+          "image": "assets/products/et-2980u/slide-02.svg",
+          "heading": "Up to 3 Years of Ink Included in the Box(2)",
+          "body": "Large ink tanks reduce the hassle of frequently replacing ink cartridges.",
+          "alt": "EcoTank printer ink tank system"
+        },
+        {
+          "navLabel": "Reliable Design",
+          "image": "assets/products/et-2980u/slide-03.svg",
+          "heading": "Our Most Reliable EcoTank® Ever",
+          "body": "Unique permanent printhead with pro-grade engineering delivers improved everyday reliability.",
+          "alt": "EcoTank printer reliable design engineering"
+        },
+        {
+          "navLabel": "Stunning Print Quality",
+          "image": "assets/products/et-2980u/slide-04.svg",
+          "heading": "Unique Epson PrecisionCore® Print Technology",
+          "body": "High 4,800 x 1,200 print resolution for sharp text & true photographic print quality.",
+          "alt": "High quality print samples from EcoTank"
+        },
+        {
+          "navLabel": "The Supertank Leader",
+          "image": "assets/products/et-2980u/slide-05.svg",
+          "heading": "The World’s #1 Selling Supertank Printer",
+          "body": "With over 100 million sold worldwide(3).",
+          "alt": "EcoTank #1 selling supertank printer worldwide"
+        }
+      ]
+    },
+    {
+      "id": "readyprint",
+      "label": "ReadyPrint Benefits",
+      "slides": [
+        {
+          "navLabel": "Get a New EcoTank Printer",
+          "image": "assets/products/et-2980u/rp-slide-01.svg",
+          "heading": "Get a New EcoTank Printer Plus Upgrades.",
+          "body": "Get a free printer upgrade every 2-years. Plus no up-front costs and a 30-day risk-free trial.",
+          "alt": "ReadyPrint printer upgrade offer"
+        },
+        {
+          "navLabel": "Unlimited Color Printing",
+          "image": "assets/products/et-2980u/rp-slide-02.svg",
+          "heading": "Print All You Want Worry-Free",
+          "body": "With Automatic Ink Replenishment, Epson will ship you replacement ink before you run out.",
+          "alt": "ReadyPrint automatic ink replenishment"
+        },
+        {
+          "navLabel": "No Surprises",
+          "image": "assets/products/et-2980u/rp-slide-03.svg",
+          "heading": "Zero Page Limits & Overage Fee’s",
+          "body": "Epson ReadyPrint has zero page limits and overage fee’s. Just a predicatble low monthly cost.",
+          "alt": "ReadyPrint zero page limits and overage fees"
+        },
+        {
+          "navLabel": "Premium Support",
+          "image": "assets/products/et-2980u/rp-slide-04.svg",
+          "heading": "Premium White Glove Customer Support",
+          "body": "Get continuous printer coverage with dedicated agent support and next business day unit exchange.",
+          "alt": "ReadyPrint premium customer support"
+        }
+      ]
+    }
+  ],
+  "hotspots": {
+    "images": [
+      {
+        "src": "assets/products/et-2980u/hotspot-tl.svg",
+        "alt": "Wireless printing and smart panel"
+      },
+      {
+        "src": "assets/products/et-2980u/hotspot-tr.svg",
+        "alt": "Printer front view with ink bottles"
+      },
+      {
+        "src": "assets/products/et-2980u/hotspot-bl.svg",
+        "alt": "Printer with scanner open"
+      },
+      {
+        "src": "assets/products/et-2980u/hotspot-br.svg",
+        "alt": "Printer with ink bottles"
+      }
+    ],
+    "points": [
+      {
+        "imageIndex": 1,
+        "x": 90,
+        "y": 25,
+        "heading": "Uniquely Keyed EcoFit® Ink Bottles",
+        "body": "Makes refilling ink simple. No mess, no stress and no ink bottle mix-ups."
+      },
+      {
+        "imageIndex": 0,
+        "x": 85,
+        "y": 30,
+        "heading": "Wireless Mobile Printing",
+        "body": "Wirelessly print and scan from your PC or smart device(4), including support for Apple® AirPrint®. Enjoy enhanced mobile printing from the Epson Smart Panel® App(5)."
+      },
+      {
+        "imageIndex": 0,
+        "x": 50,
+        "y": 75,
+        "heading": "1.44\" Color Display",
+        "body": "Designed for simple navigation and printer management."
+      },
+      {
+        "imageIndex": 2,
+        "x": 55,
+        "y": 45,
+        "heading": "Built-In Color Scanner & Copier",
+        "body": "Built-in high-resolution flatbed color scanner."
+      },
+      {
+        "imageIndex": 2,
+        "x": 45,
+        "y": 80,
+        "heading": "Stunning Print Quality",
+        "body": "Powered by Epson PrecisionCore® print technology, EcoTank® produces incredible photographic print quality from a recognized leader in photographic printing."
+      },
+      {
+        "imageIndex": 3,
+        "x": 75,
+        "y": 80,
+        "heading": "Robust Paper Handling",
+        "body": "100-sheet paper input tray and auto 2-sided printing."
+      }
+    ]
+  },
+  "disclaimers": [
+    "1. Individual cartridges estimate based on print yields of an included or replacement set of black and color ink bottles as compared to Epson standard-capacity ink cartridges for similarly featured printers as of March 2024.",
+    "2. Based on average monthly document print volumes of about 125 pages.",
+    "3. Worldwide 2011 – 10/2024.",
+    "4. Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect™ enabled printers and compatible devices and apps, visit epson.com/connect.",
+    "5. Requires Epson Smart Panel app download. Data usage fees may apply."
+  ]
+}
