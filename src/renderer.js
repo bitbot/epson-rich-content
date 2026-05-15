@@ -136,21 +136,33 @@ function renderHotspotsSection(hotspots, expanded) {
   }
 
   /* Expanded view: render composite image once per hotspot with that hotspot's
-     marker highlighted and its content shown inline below — matches C2's
-     A+ Premium and Hybris expanded preview pattern for Pastel review */
+     popup "forced open" — the interactive state rendered statically. Shows the
+     dimmed backdrop, active marker, and floating popup card in position.
+     Matches C2's A+ Premium and Hybris expanded preview pattern for Pastel. */
   var html = '';
   for (var i = 0; i < hotspots.points.length; i++) {
     var pt = hotspots.points[i];
     html += '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">' +
       '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">' +
         '<div class="ccs-hotspots ccs-hotspots-default" style="position:relative; display:inline-block; width:100%">' +
+          /* Dimmed backdrop overlay */
+          '<div class="ccs-hotspot-expanded-dim"></div>' +
+          /* Composite image */
           '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" style="display:block; width:100%" />' +
-          '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none"></div>' +
-        '</div>' +
-        '<div class="ccs-hotspot-expanded-content">' +
-          (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +
-          '<h4>' + pt.heading + '</h4>' +
-          '<p>' + pt.body + '</p>' +
+          /* Active marker */
+          '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>' +
+          /* Static popup card, positioned relative to marker.
+             Horizontal: anchor left edge if marker is in left half, right edge if right half.
+             Vertical: below marker if in top half, above if in bottom half. */
+          '<div class="ccs-hotspot-expanded-popup" style="left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform: translate(' + (pt.x < 0.5 ? '0%' : '-100%') + ', ' + (pt.y < 0.5 ? '16px' : 'calc(-100% - 16px)') + ')">' +
+            '<div class="ccs-hotspots-tooltip ccs-hotspots-tooltip-medium">' +
+              '<div class="qtip-content"><div>' +
+                (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +
+                '<h4>' + pt.heading + '</h4>' +
+                '<p>' + pt.body + '</p>' +
+              '</div></div>' +
+            '</div>' +
+          '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
