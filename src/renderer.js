@@ -124,6 +124,32 @@ function renderCarouselSection(carousel, expanded) {
   '</div>';
 }
 
+function getExpandedPopupStyle(mx, my) {
+  /* Position the popup card near its marker but clamped within the image.
+     Popup is ~23% of container width (280px in a ~1200px container).
+     We leave ~2% padding from edges. */
+  var popupW = 0.24;  /* popup width as fraction of container */
+  var pad = 0.02;     /* edge padding */
+  var markerGap = 0.03; /* gap between marker and popup edge */
+
+  /* Horizontal: try to center on marker, clamp to [pad, 1-pad-popupW] */
+  var left = mx - popupW / 2;
+  left = Math.max(pad, Math.min(left, 1 - pad - popupW));
+
+  /* Vertical: place below marker if there's room, otherwise above.
+     Estimate popup height as ~35% of container height. */
+  var popupH = 0.40;
+  var top;
+  if (my + markerGap + popupH <= 1 - pad) {
+    top = my + markerGap;
+  } else {
+    top = my - markerGap - popupH;
+    top = Math.max(pad, top);
+  }
+
+  return 'left:' + (left * 100).toFixed(1) + '%; top:' + (top * 100).toFixed(1) + '%';
+}
+
 function renderHotspotsSection(hotspots, expanded) {
   var pointsData = JSON.stringify(hotspots.points).replace(/'/g, '&#39;');
 
@@ -151,10 +177,10 @@ function renderHotspotsSection(hotspots, expanded) {
           '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" style="display:block; width:100%" />' +
           /* Active marker */
           '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>' +
-          /* Static popup card, positioned relative to marker.
-             Horizontal: anchor left edge if marker is in left half, right edge if right half.
-             Vertical: below marker if in top half, above if in bottom half. */
-          '<div class="ccs-hotspot-expanded-popup" style="left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform: translate(' + (pt.x < 0.5 ? '0%' : '-100%') + ', ' + (pt.y < 0.5 ? '16px' : 'calc(-100% - 16px)') + ')">' +
+          /* Static popup card, clamped within the composite image bounds.
+             The popup is ~23% wide (280px / ~1200px). Position it near the marker
+             but clamp so it stays fully inside the image area. */
+          '<div class="ccs-hotspot-expanded-popup" style="' + getExpandedPopupStyle(pt.x, pt.y) + '">' +
             '<div class="ccs-hotspots-tooltip ccs-hotspots-tooltip-medium">' +
               '<div class="qtip-content"><div>' +
                 (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +

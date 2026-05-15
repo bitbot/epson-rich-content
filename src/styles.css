@@ -156,7 +156,7 @@ body { display: block !important; flex-direction: unset !important; }
 
 /* Expanded view — hotspot instances: static rendering of the "popup open" state */
 .ccs-hotspots-expanded-instance .ccs-hotspots {
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* Dim overlay on the composite image */
@@ -168,18 +168,40 @@ body { display: block !important; flex-direction: unset !important; }
   pointer-events: none;
 }
 
-/* Static popup card positioned at the hotspot marker location */
+/* Static popup card — positioned via inline styles computed to stay within bounds */
 .ccs-hotspot-expanded-popup {
   position: absolute;
   z-index: 4;
   pointer-events: none;
-  /* transform set inline per hotspot for smart edge-aware anchoring */
 }
 
-/* Reuse the same tooltip styling as the interactive popup */
 .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip {
   position: relative;
-  width: 320px;
+  width: 280px;
+  max-height: none;
+}
+
+/* Smaller text in expanded static popups to fit within bounds */
+.ccs-hotspot-expanded-popup .qtip-content {
+  padding: 0 12px;
+}
+
+.ccs-hotspot-expanded-popup .qtip-content > div {
+  padding: 10px 0;
+}
+
+.ccs-hotspot-expanded-popup .qtip-content h4 {
+  font-size: 1em;
+}
+
+.ccs-hotspot-expanded-popup .qtip-content p {
+  font-size: 0.85em;
+}
+
+.ccs-hotspot-expanded-popup .qtip-content img {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
 }
 
 /* Remove close button in expanded static popups */
