@@ -1,34 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1WS Rich Content Preview</title>
-  <link rel="stylesheet" href="https://use.typekit.net/mgt5dwg.css">
-  <link rel="stylesheet" href="src/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Epson Rich Content Preview</title>
+<link rel="stylesheet" href="https://use.typekit.net/mgt5dwg.css">
+<link rel="stylesheet" href="src/vendor/Inline.css">
+<link rel="stylesheet" href="src/vendor/nogap.css">
+<link rel="stylesheet" href="src/vendor/jquery.fancybox.css">
+<link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
-  <div id="app">
-    <div id="index-page" class="index-page" style="display:none">
-      <div class="index-header">
-        <h1>1WorldSync Rich Content Preview</h1>
-        <p>Epson ReadyPrint — Staples</p>
-      </div>
-      <div class="index-products" id="product-list"></div>
-    </div>
-    <div id="product-page" style="display:none">
-      <div class="product-nav">
-        <a href="/" class="back-link">&larr; All Products</a>
-        <div class="view-toggle">
-          <a href="#" id="toggle-interactive" class="active">Interactive</a>
-          <a href="#" id="toggle-expanded">Expanded</a>
-        </div>
-      </div>
-      <div id="content-container" class="content-container"></div>
-    </div>
-  </div>
-  <script src="src/renderer.js"></script>
-  <script src="src/carousel.js"></script>
-  <script src="src/hotspots.js"></script>
+<div id="app"></div>
+<script src="src/renderer.js"></script>
+<script src="src/carousel.js"></script>
+<script src="src/hotspots.js"></script>
 </body>
 </html>

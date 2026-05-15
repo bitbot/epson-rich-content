@@ -1,5 +1,8 @@
 .DS_Store
 
+# 1WS reference source files (local only, not deployed)
+reference/
+
 # Logs
 logs
 *.log

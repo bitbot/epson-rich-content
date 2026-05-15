@@ -1,80 +1,57 @@
-const PRODUCTS = [
-  { slug: 'et-2980u', name: 'Epson EcoTank® ET-2980U', segment: 'Home' }
+var PRODUCTS = [
+  { slug: 'et-2980u', name: 'ET-2980U' }
 ];
 
 function getRoute() {
-  const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
-  const params = new URLSearchParams(window.location.search);
-  const expanded = params.get('expanded') === 'all';
-  return { path: path || '', expanded };
-}
-
-function navigate(href, e) {
-  if (e) e.preventDefault();
-  window.history.pushState(null, '', href);
-  route();
+  var path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  var params = new URLSearchParams(window.location.search);
+  return { path: path || '', expanded: params.get('expanded') === 'all' };
 }
 
 function route() {
-  const { path, expanded } = getRoute();
-  const indexEl = document.getElementById('index-page');
-  const productEl = document.getElementById('product-page');
+  var r = getRoute();
+  var app = document.getElementById('app');
 
-  if (!path) {
-    indexEl.style.display = '';
-    productEl.style.display = 'none';
-    renderIndex();
-  } else {
-    indexEl.style.display = 'none';
-    productEl.style.display = '';
-    loadProduct(path, expanded);
+  if (!r.path) {
+    app.innerHTML = '<div style="padding:40px;font-family:sans-serif;font-size:14px">' +
+      PRODUCTS.map(function(p) {
+        return '<a href="/' + p.slug + '">' + p.name + '</a>';
+      }).join(' | ') + '</div>';
+    return;
   }
+
+  app.innerHTML = '<div style="padding:40px;text-align:center;color:#999;font-family:sans-serif">Loading…</div>';
+  loadProduct(r.path, r.expanded);
 }
 
-function renderIndex() {
-  const list = document.getElementById('product-list');
-  list.innerHTML = PRODUCTS.map(p => `
-    <a href="/${p.slug}" class="product-card" onclick="navigate('/${p.slug}', event)">
-      <h2>${p.name}</h2>
-      <div class="sku">${p.slug.toUpperCase()}</div>
-      <span class="segment">${p.segment}</span>
-    </a>
-  `).join('');
+function loadProduct(slug, expanded) {
+  fetch('/data/' + slug + '.json')
+    .then(function(r) { if (!r.ok) throw new Error('Not found'); return r.json(); })
+    .then(function(data) { renderProduct(data, expanded); })
+    .catch(function(err) {
+      document.getElementById('app').innerHTML =
+        '<div style="padding:40px;text-align:center;color:#c00;font-family:sans-serif">' + err.message + '</div>';
+    });
 }
 
-async function loadProduct(slug, expanded) {
-  const container = document.getElementById('content-container');
-  container.innerHTML = '<p style="padding:40px;text-align:center;color:#999">Loading…</p>';
+function renderProduct(data, expanded) {
+  var cls = 'ccs-cc-inline ccs-cc-inline-eps ccs-cc-lang-enusa ccs-cc-lightbox-disabled ccs-cc-block-inline';
+  if (expanded) cls += ' preview-expanded';
 
-  const toggleInt = document.getElementById('toggle-interactive');
-  const toggleExp = document.getElementById('toggle-expanded');
-  toggleInt.className = expanded ? '' : 'active';
-  toggleExp.className = expanded ? 'active' : '';
-  toggleInt.href = `/${slug}`;
-  toggleExp.href = `/${slug}?expanded=all`;
-  toggleInt.onclick = (e) => navigate(`/${slug}`, e);
-  toggleExp.onclick = (e) => navigate(`/${slug}?expanded=all`, e);
-
-  try {
-    const resp = await fetch(`/data/${slug}.json`);
-    if (!resp.ok) throw new Error('Product not found');
-    const data = await resp.json();
-    document.title = `${data.product.name} — 1WS Preview`;
-    renderProduct(container, data, expanded);
-  } catch (err) {
-    container.innerHTML = `<p style="padding:40px;text-align:center;color:#c00">${err.message}</p>`;
-  }
-}
-
-function renderProduct(container, data, expanded) {
-  let html = '';
+  var html = '<div class="' + cls + '">';
+  html += '<div class="ccs-clear"></div>';
   html += renderHero(data.hero);
-  for (const carousel of data.carousels) {
-    html += renderCarousel(carousel, expanded);
+  for (var i = 0; i < data.carousels.length; i++) {
+    html += renderCarouselSection(data.carousels[i], expanded);
   }
-  html += renderHotspots(data.hotspots, expanded);
-  html += renderDisclaimers(data.disclaimers);
-  container.innerHTML = html;
+  html += renderHotspotsSection(data.hotspots, expanded);
+  html += renderDisclaimersSection(data.disclaimers);
+  html += '</div>';
+
+  document.getElementById('app').innerHTML = html;
+  document.title = data.product.name + ' — 1WS Preview';
+
+  initElementQueries();
 
   if (!expanded) {
     initCarousels();
@@ -83,97 +60,128 @@ function renderProduct(container, data, expanded) {
 }
 
 function renderHero(hero) {
-  return `
-    <section class="hero">
-      <picture>
-        <source media="(max-width: 768px)" srcset="${hero.imageMobile}">
-        <img src="${hero.image}" alt="${hero.alt}">
-      </picture>
-      <div class="hero-overlay">
-        <h1 class="hero-headline">${hero.headline}</h1>
-        <p class="hero-subheadline">${hero.subheadline}</p>
-      </div>
-    </section>`;
+  return '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+    '<div class="ccs-cc-inline-features-block ccs-cc-inline-overlay ccs-cc-aspect-ratio" data-background="image" style="--ratio:' + hero.ratio + '">' +
+      '<div class="ccs-cc-inline-feature-background-mobile">' +
+        '<img src="' + hero.image + '" alt="' + hero.alt + '"/>' +
+      '</div>' +
+      '<div class="ccs-cc-inline-feature-background" style="background-color:#ffffff; padding-top:' + hero.paddingTop + '; background-image:url(\'' + hero.image + '\'); background-size:cover; background-repeat:no-repeat; background-position:' + hero.bgPosition + '; background-attachment:scroll"></div>' +
+      '<div class="ccs-cc-inline-overlay-outer">' +
+        '<div class="ccs-cc-inline-overlay-inner ccs-cc-inline-feature" data-type="" data-desktop-media="false" data-text-row-position="center" data-text-column-position="left" data-media-row-position="center" data-media-column-position="right" data-text-width-unlimited="false" data-media-size-unlimited="false">' +
+          '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-media-container"></div>' +
+          '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description-container" style="width:45%">' +
+            '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description"></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
 }
 
-function renderCarousel(carousel, expanded) {
-  if (expanded) {
-    const slides = carousel.slides.map(s => `
-      <div class="carousel-slide">
-        <img src="${s.image}" alt="${s.alt}">
-        <div class="carousel-card">
-          <h3>${s.heading}</h3>
-          <p>${s.body}</p>
-        </div>
-      </div>`).join('');
-    return `<section class="carousel-section expanded-slides" data-carousel="${carousel.id}">${slides}</section>`;
+function renderSlide(slide) {
+  return '<div class="ccs-cc-inline-features-block ccs-cc-inline-overlay ccs-cc-aspect-ratio" data-background="image" style="--ratio:' + slide.ratio + '">' +
+    '<div class="ccs-cc-inline-feature-background-mobile">' +
+      '<img src="' + slide.image + '" alt="' + (slide.alt || '') + '"/>' +
+    '</div>' +
+    '<div class="ccs-cc-inline-feature-background" style="background-color:#ffffff; padding-top:' + slide.paddingTop + '; background-image:url(\'' + slide.image + '\'); background-size:cover; background-repeat:no-repeat; background-position:' + slide.bgPosition + '; background-attachment:scroll"></div>' +
+    '<div class="ccs-cc-inline-overlay-outer">' +
+      '<div class="ccs-cc-inline-overlay-inner ccs-cc-inline-feature" data-type="text" data-desktop-media="false" data-text-row-position="center" data-text-column-position="left" data-media-row-position="center" data-media-column-position="right" data-text-width-unlimited="true" data-media-size-unlimited="false">' +
+        '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-media-container"></div>' +
+        '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description-container" style="width:100%">' +
+          '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description" style="color:#ffffff; background-color:rgba(0, 0, 0, 0.7);">' +
+            '<span style="font-size: 1.44em;"><b>' + slide.heading + '</b></span>' +
+            '<div><br></div><div>' + slide.body + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderCarouselSection(carousel, expanded) {
+  var slidesHtml = '';
+  for (var i = 0; i < carousel.slides.length; i++) {
+    slidesHtml += renderSlide(carousel.slides[i]);
   }
 
-  const slides = carousel.slides.map(s => `
-    <div class="carousel-slide">
-      <img src="${s.image}" alt="${s.alt}">
-      <div class="carousel-card">
-        <h3>${s.heading}</h3>
-        <p>${s.body}</p>
-      </div>
-    </div>`).join('');
-
-  const dots = carousel.slides.map((_, i) =>
-    `<button class="carousel-dot${i === 0 ? ' active' : ''}" data-index="${i}" aria-label="Slide ${i + 1}"></button>`
-  ).join('');
-
-  return `
-    <section class="carousel-section" data-carousel="${carousel.id}">
-      <div class="carousel-viewport">
-        <div class="carousel-track">${slides}</div>
-      </div>
-      <div class="carousel-dots">${dots}</div>
-    </section>`;
-}
-
-function renderHotspots(hotspots, expanded) {
-  const quadrants = hotspots.images.map((img, qi) => {
-    const markers = hotspots.points
-      .map((pt, pi) => {
-        if (pt.imageIndex !== qi) return '';
-        return `<button class="hotspot-marker" data-heading="${pt.heading.replace(/"/g, '&quot;')}" data-body="${pt.body.replace(/"/g, '&quot;')}" style="left:${pt.x}%;top:${pt.y}%">+</button>`;
-      }).join('');
-    return `
-      <div class="hotspot-quadrant">
-        <img src="${img.src}" alt="${img.alt}">
-        ${expanded ? '' : markers}
-      </div>`;
-  }).join('');
-
-  let details = '';
   if (expanded) {
-    details = '<div class="hotspot-details">' + hotspots.points.map(pt => `
-      <div class="hotspot-detail-item">
-        <h4>${pt.heading}</h4>
-        <p>${pt.body}</p>
-      </div>`).join('') + '</div>';
+    return '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+      slidesHtml +
+    '</div>';
   }
 
-  const popup = expanded ? '' : `
-    <div class="hotspot-backdrop" id="hotspot-backdrop"></div>
-    <div class="hotspot-popup" id="hotspot-popup">
-      <button class="hotspot-popup-close" id="hotspot-close">&times;</button>
-      <h4 id="hotspot-title"></h4>
-      <p id="hotspot-body"></p>
-    </div>`;
-
-  return `
-    <section class="hotspot-section">
-      <div class="hotspot-grid">${quadrants}</div>
-      ${details}
-    </section>
-    ${popup}`;
+  return '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+    '<div class="ccs-cc-inline-features-block ccs-cc-fc ccs-cc-inline-noautoplay" data-carousel-id="' + carousel.id + '">' +
+      '<div class="ccs-cc-fc-items" tabindex="0">' +
+        slidesHtml +
+      '</div>' +
+      '<div class="ccs-cc-fc-custom-controls"></div>' +
+      '<div class="ccs-cc-fc-arrows">' +
+        '<a class="ccs-cc-fc-arrow ccs-slick-arrow ccs-slick-prev" href="javascript:;" role="button" aria-label="show previous slide"><span></span></a>' +
+        '<a class="ccs-cc-fc-arrow ccs-slick-arrow ccs-slick-next" href="javascript:;" role="button" aria-label="show next slide"><span></span></a>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
 }
 
-function renderDisclaimers(disclaimers) {
-  return `<div class="disclaimers">${disclaimers.map(d => `<p>${d}</p>`).join('')}</div>`;
+function renderHotspotsSection(hotspots, expanded) {
+  var pointsData = JSON.stringify(hotspots.points).replace(/'/g, '&#39;');
+
+  var html = '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">' +
+    '<div class="ccs-hotspots-container">' +
+      '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" data-hotspots-json=\'' + pointsData + '\' />' +
+    '</div>';
+
+  if (expanded) {
+    html += '<div class="ccs-hotspots-expanded-details">';
+    for (var i = 0; i < hotspots.points.length; i++) {
+      var pt = hotspots.points[i];
+      html += '<div class="ccs-hotspot-expanded-item">' +
+        '<img src="' + pt.popupImage + '" alt="' + pt.popupAlt + '" />' +
+        '<div><h4>' + pt.heading + '</h4><p>' + pt.body + '</p></div>' +
+      '</div>';
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function renderDisclaimersSection(disclaimers) {
+  return '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+    '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature">' +
+      '<div class="ccs-cc-inline-feature" data-type="text">' +
+        '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description">' +
+          disclaimers +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function initElementQueries() {
+  var el = document.querySelector('.ccs-cc-inline');
+  if (!el) return;
+
+  var breakpoints = [570, 680, 790, 900];
+
+  function update() {
+    var w = el.offsetWidth;
+    var vals = [];
+    for (var i = 0; i < breakpoints.length; i++) {
+      if (w <= breakpoints[i]) vals.push(breakpoints[i] + 'px');
+    }
+    el.setAttribute('max-width', vals.join(' '));
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(update).observe(el);
+  } else {
+    window.addEventListener('resize', update);
+  }
+  update();
 }
 
 window.addEventListener('popstate', route);
-window.navigate = navigate;
 route();

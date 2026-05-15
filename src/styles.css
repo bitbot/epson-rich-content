@@ -1,463 +1,196 @@
-*, *::before, *::after {
-  box-sizing: border-box;
+/* Epson subscriber overrides (from 1WS custom.css) */
+.ccs-cc-inline .ccs-cc-inline-header-hero img { min-width: 285px !important; }
+.ccs-cc-inline .ccs-cc-inline-section h3 { font-weight: bold !important; text-transform: none !important; }
+.ccs-cc-inline .ccs-cc-inline-section ul { list-style: disc !important; margin-left: 20px !important; }
+.ccs-cc-inline .ccs-cc-inline-section ol { list-style-type: decimal !important; margin-left: 20px !important; }
+.ccs-cc-inline .ccs-cc-inline-intro { font-size: 22px !important; }
+.ccs-cc-inline sup a[id] { color: inherit !important; cursor: inherit !important; }
+.ccs-cc-inline { font-family: "motiva-sans", Motiva, Helvetica, Arial, sans-serif !important; }
+.ccs-cc-inline h4 { margin: .2em 0 !important; }
+
+/* Page-level styles */
+body {
   margin: 0;
   padding: 0;
-}
-
-body {
-  font-family: "motiva-sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  line-height: 1.5;
+  background: #fff;
+  font-family: "motiva-sans", Motiva, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- Index Page --- */
+/* Remove body flex-direction reverse from 1WS subscriber CSS */
+body { display: block !important; flex-direction: unset !important; }
 
-.index-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 60px 20px;
+/* Carousel arrow replacements (since we don't have the 1WS sprite image) */
+.ccs-cc-inline .ccs-slick-arrow span::before {
+  content: "" !important;
 }
 
-.index-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.index-header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-
-.index-header p {
-  font-size: 16px;
-  color: #666;
-}
-
-.index-products {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.product-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  text-decoration: none;
-  color: inherit;
-  transition: box-shadow 0.2s;
-  border: 1px solid #e0e0e0;
-}
-
-.product-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.product-card h2 {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.product-card .sku {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 8px;
-}
-
-.product-card .segment {
-  display: inline-block;
-  font-size: 12px;
-  background: #e8f5e9;
-  color: #2e7d32;
-  padding: 2px 10px;
-  border-radius: 12px;
-}
-
-/* --- Product Nav --- */
-
-.product-nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
+.ccs-cc-inline .ccs-cc-fc .ccs-cc-fc-arrow.ccs-slick-arrow span {
+  width: 20px !important;
+  height: 32px !important;
+  display: flex !important;
   align-items: center;
-}
-
-.back-link {
-  font-size: 14px;
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-}
-
-.view-toggle {
-  display: flex;
-  gap: 4px;
-  background: #e0e0e0;
-  border-radius: 6px;
-  padding: 2px;
-}
-
-.view-toggle a {
-  font-size: 13px;
-  padding: 6px 14px;
-  border-radius: 4px;
-  text-decoration: none;
-  color: #555;
-  transition: all 0.15s;
-}
-
-.view-toggle a.active {
-  background: #fff;
-  color: #1a1a1a;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* --- Content Container --- */
-
-.content-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* --- Hero Banner --- */
-
-.hero {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background: #1a1a1a;
-}
-
-.hero img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 50%;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  padding: 40px 60px;
-  color: #fff;
 }
 
-.hero-headline {
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 12px;
-}
-
-.hero-subheadline {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.4;
-  opacity: 0.9;
-}
-
-/* --- Feature Carousel --- */
-
-.carousel-section {
-  position: relative;
-  width: 100%;
-  margin-top: 4px;
-}
-
-.carousel-viewport {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-
-.carousel-track {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-.carousel-slide {
-  position: relative;
-  flex: 0 0 100%;
-  width: 100%;
-}
-
-.carousel-slide img {
-  width: 100%;
-  height: auto;
+.ccs-cc-inline .ccs-cc-fc .ccs-slick-prev.ccs-slick-arrow span::after {
+  content: "";
   display: block;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #333;
+  border-bottom: 2px solid #333;
+  transform: rotate(45deg);
+  margin-left: 4px;
 }
 
-.carousel-card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 45%;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 40px 50px;
-  color: #fff;
-}
-
-.carousel-card h3 {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 14px;
-}
-
-.carousel-card p {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.55;
-  opacity: 0.92;
-}
-
-.carousel-dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 16px 0;
-  background: #f5f5f5;
-}
-
-.carousel-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ccc;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-  padding: 0;
-}
-
-.carousel-dot.active {
-  background: #333;
-}
-
-/* --- Expanded Carousel (stacked) --- */
-
-.expanded-slides .carousel-slide {
-  margin-bottom: 4px;
-}
-
-/* --- Hotspot Section --- */
-
-.hotspot-section {
-  margin-top: 4px;
-  padding: 30px;
-  background: #fff;
-}
-
-.hotspot-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.hotspot-quadrant {
-  position: relative;
-  overflow: hidden;
-}
-
-.hotspot-quadrant img {
-  width: 100%;
-  height: auto;
+.ccs-cc-inline .ccs-cc-fc .ccs-slick-next.ccs-slick-arrow span::after {
+  content: "";
   display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #333;
+  border-top: 2px solid #333;
+  transform: rotate(45deg);
+  margin-right: 4px;
 }
 
-.hotspot-marker {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #4caf50;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 32px;
-  text-align: center;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 2;
-  border: none;
-}
-
-.hotspot-marker:hover {
-  transform: translate(-50%, -50%) scale(1.15);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-}
-
-/* --- Hotspot Popup --- */
-
-.hotspot-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 100;
+/* Hotspot overlay backdrop */
+.ccs-hotspot-overlay-backdrop {
   display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99998;
 }
 
-.hotspot-backdrop.visible {
+.ccs-hotspot-overlay-backdrop.active {
   display: block;
 }
 
-.hotspot-popup {
+/* Hotspot tooltip card (replacing qTip) */
+.ccs-hotspots-tooltips {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 99999;
+}
+
+.ccs-hotspots-tooltip {
   background: #fff;
-  border-radius: 8px;
-  padding: 32px;
-  max-width: 480px;
-  width: 90%;
-  z-index: 101;
-  display: none;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  max-width: 450px;
+  width: 90vw;
+  position: relative;
 }
 
-.hotspot-popup.visible {
-  display: block;
-}
-
-.hotspot-popup-close {
+.ccs-hotspots-tooltip .qtip-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: #eee;
-  border-radius: 50%;
-  font-size: 16px;
+  top: -16px;
+  right: -16px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
+  border: none;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
-  transition: background 0.15s;
+  z-index: 1;
+  color: #666;
+  padding: 0;
 }
 
-.hotspot-popup-close:hover {
-  background: #ddd;
+.ccs-hotspots-tooltip .qtip-close:hover {
+  color: #333;
 }
 
-.hotspot-popup h4 {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  padding-right: 24px;
+.ccs-hotspots-tooltip .qtip-content {
+  padding: 0 16px;
+  line-height: 1.5;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
-.hotspot-popup p {
-  font-size: 15px;
-  line-height: 1.55;
+.ccs-hotspots-tooltip .qtip-content > div {
+  padding: 16px 0;
+}
+
+.ccs-hotspots-tooltip .qtip-content > div > * + * {
+  margin-top: 0.7em;
+}
+
+.ccs-hotspots-tooltip .qtip-content img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.ccs-hotspots-tooltip .qtip-content h4 {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.ccs-hotspots-tooltip .qtip-content p {
+  font-size: 0.95em;
+  line-height: 1.5;
   color: #444;
 }
 
-/* --- Expanded Hotspot Details --- */
-
-.hotspot-details {
+/* Expanded view — hotspot details */
+.ccs-hotspots-expanded-details {
   max-width: 900px;
-  margin: 24px auto 0;
+  margin: 20px auto 0;
+  padding: 0 16px;
 }
 
-.hotspot-detail-item {
-  padding: 20px 0;
+.ccs-hotspot-expanded-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 0;
   border-bottom: 1px solid #eee;
 }
 
-.hotspot-detail-item:last-child {
+.ccs-hotspot-expanded-item:last-child {
   border-bottom: none;
 }
 
-.hotspot-detail-item h4 {
-  font-size: 17px;
+.ccs-hotspot-expanded-item img {
+  width: 120px;
+  height: auto;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.ccs-hotspot-expanded-item h4 {
+  font-size: 1em;
   font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.hotspot-detail-item p {
-  font-size: 15px;
-  line-height: 1.55;
-  color: #444;
-}
-
-/* --- Disclaimers --- */
-
-.disclaimers {
-  max-width: 1200px;
-  margin: 24px auto 0;
-  padding: 24px 30px 40px;
-  font-size: 11px;
-  color: #888;
-  line-height: 1.6;
-}
-
-.disclaimers p {
   margin-bottom: 4px;
 }
 
-/* --- Responsive --- */
+.ccs-hotspot-expanded-item p {
+  font-size: 0.9em;
+  line-height: 1.5;
+  color: #555;
+}
 
-@media (max-width: 768px) {
-  .hero-overlay {
-    width: 70%;
-    padding: 24px 30px;
-  }
+/* Expanded view — all slides stacked */
+.preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block {
+  margin-top: 4px !important;
+}
 
-  .hero-headline {
-    font-size: 24px;
-  }
+/* Hide carousel controls in expanded mode (shouldn't exist but safety) */
+.preview-expanded .ccs-cc-fc-custom-controls,
+.preview-expanded .ccs-cc-fc-arrows {
+  display: none !important;
+}
 
-  .hero-subheadline {
-    font-size: 14px;
-  }
-
-  .carousel-card {
-    width: 55%;
-    padding: 24px 28px;
-  }
-
-  .carousel-card h3 {
-    font-size: 18px;
-  }
-
-  .carousel-card p {
-    font-size: 13px;
-  }
-
-  .hotspot-section {
-    padding: 16px;
-  }
-
-  .product-nav {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-  }
+/* Hide hotspot markers in expanded mode */
+.preview-expanded .ccs-hotspots-point {
+  display: none !important;
 }
