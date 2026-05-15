@@ -187,8 +187,12 @@ body { display: block !important; flex-direction: unset !important; }
   margin-top: 40px !important;
 }
 
-/* Expanded view — all slides stacked with tighter spacing within a carousel group */
+/* Expanded view — tight spacing within carousel slide groups and hotspot instance groups */
 .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block {
+  margin-top: 4px !important;
+}
+
+.preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance {
   margin-top: 4px !important;
 }
 

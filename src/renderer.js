@@ -157,38 +157,31 @@ function renderHotspotsSection(hotspots, expanded) {
     '</div>';
   }
 
-  /* Expanded view: render composite image once per hotspot with that hotspot's
-     popup "forced open" — the interactive state rendered statically. Shows the
-     dimmed backdrop, active marker, and floating popup card in position.
-     Matches C2's A+ Premium and Hybris expanded preview pattern for Pastel. */
-  var html = '';
+  /* Expanded view: one section wrapping all hotspot instances.
+     Each instance shows the composite image with that hotspot's popup
+     "forced open" — dimmed backdrop, active marker, floating popup card.
+     Tight spacing between instances within the group. */
+  var html = '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">';
   for (var i = 0; i < hotspots.points.length; i++) {
     var pt = hotspots.points[i];
-    html += '<div class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">' +
-      '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">' +
-        '<div class="ccs-hotspots ccs-hotspots-default" style="position:relative; display:inline-block; width:100%">' +
-          /* Dimmed backdrop overlay */
-          '<div class="ccs-hotspot-expanded-dim"></div>' +
-          /* Composite image */
-          '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" style="display:block; width:100%" />' +
-          /* Active marker */
-          '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>' +
-          /* Static popup card, clamped within the composite image bounds.
-             The popup is ~23% wide (280px / ~1200px). Position it near the marker
-             but clamp so it stays fully inside the image area. */
-          '<div class="ccs-hotspot-expanded-popup" style="' + getExpandedPopupStyle(pt.x, pt.y) + '">' +
-            '<div class="ccs-hotspots-tooltip ccs-hotspots-tooltip-medium">' +
-              '<div class="qtip-content"><div>' +
-                (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +
-                '<h4>' + pt.heading + '</h4>' +
-                '<p>' + pt.body + '</p>' +
-              '</div></div>' +
-            '</div>' +
+    html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">' +
+      '<div class="ccs-hotspots ccs-hotspots-default" style="position:relative; display:inline-block; width:100%">' +
+        '<div class="ccs-hotspot-expanded-dim"></div>' +
+        '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" style="display:block; width:100%" />' +
+        '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>' +
+        '<div class="ccs-hotspot-expanded-popup" style="' + getExpandedPopupStyle(pt.x, pt.y) + '">' +
+          '<div class="ccs-hotspots-tooltip ccs-hotspots-tooltip-medium">' +
+            '<div class="qtip-content"><div>' +
+              (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +
+              '<h4>' + pt.heading + '</h4>' +
+              '<p>' + pt.body + '</p>' +
+            '</div></div>' +
           '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
   }
+  html += '</div>';
   return html;
 }
 
