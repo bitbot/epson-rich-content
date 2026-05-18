@@ -1,4 +1,20 @@
-/* Epson subscriber overrides (from 1WS custom.css) */
+/* ==========================================================================
+   Epson Rich Content Preview — Custom Styles
+
+   PHILOSOPHY: Use the 1WS rendering system (inline.css, nogap.css) as-is.
+   Assets (sprites, fonts) are hosted at src/vendor/img/ and src/vendor/font/
+   so all 1WS url() references resolve naturally.
+
+   This file contains ONLY:
+   1. Epson subscriber overrides (from 1WS custom.css — Epson's own config)
+   2. Page shell (body, #app — our hosting context differs from 1WS iframe)
+   3. Interactive hotspot behavior (we don't load qTip2/jQuery)
+   4. Expanded/Pastel review mode (no 1WS equivalent)
+   ========================================================================== */
+
+
+/* --- 1. Epson subscriber overrides (from 1WS custom.css) --- */
+
 .ccs-cc-inline .ccs-cc-inline-header-hero img { min-width: 285px !important; }
 .ccs-cc-inline .ccs-cc-inline-section h3 { font-weight: bold !important; text-transform: none !important; }
 .ccs-cc-inline .ccs-cc-inline-section ul { list-style: disc !important; margin-left: 20px !important; }
@@ -8,67 +24,28 @@
 .ccs-cc-inline { font-family: "motiva-sans", Motiva, Helvetica, Arial, sans-serif !important; }
 .ccs-cc-inline h4 { margin: .2em 0 !important; }
 
-/* Page-level styles */
+
+/* --- 2. Page shell --- */
+
 body {
   margin: 0;
   padding: 0;
   background: #fff;
   font-family: "motiva-sans", Motiva, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  display: block !important;          /* undo 1WS body flex-direction reverse */
+  flex-direction: unset !important;
 }
 
-/* Remove body flex-direction reverse from 1WS subscriber CSS */
-body { display: block !important; flex-direction: unset !important; }
-
-/* Content width constraint — matches 1WS iframe rendering on Staples (~1200px) */
 #app {
-  max-width: 1200px;
+  max-width: 1200px;   /* matches 1WS iframe rendering on Staples */
   margin: 0 auto;
 }
 
-/* Carousel dots — hide the numeric text labels without collapsing
-   the em-based sizing from 1WS inline.css */
-.ccs-cc-inline .ccs-cc-fc .ccs-slick-dots li a {
-  color: transparent !important;
-  overflow: hidden !important;
-}
 
-/* Carousel arrow replacements (since we don't have the 1WS sprite image) */
-.ccs-cc-inline .ccs-slick-arrow span::before {
-  content: "" !important;
-}
+/* --- 3. Interactive hotspot behavior (replacing qTip2) --- */
 
-.ccs-cc-inline .ccs-cc-fc .ccs-cc-fc-arrow.ccs-slick-arrow span {
-  width: 20px !important;
-  height: 32px !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-.ccs-cc-inline .ccs-cc-fc .ccs-slick-prev.ccs-slick-arrow span::after {
-  content: "";
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-left: 2px solid #333;
-  border-bottom: 2px solid #333;
-  transform: rotate(45deg);
-  margin-left: 4px;
-}
-
-.ccs-cc-inline .ccs-cc-fc .ccs-slick-next.ccs-slick-arrow span::after {
-  content: "";
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid #333;
-  border-top: 2px solid #333;
-  transform: rotate(45deg);
-  margin-right: 4px;
-}
-
-/* Hotspot overlay backdrop — scoped to the hotspot wrapper */
+/* Backdrop — scoped to the hotspot wrapper, not the full viewport */
 .ccs-hotspot-overlay-backdrop {
   display: none;
   position: absolute;
@@ -81,7 +58,7 @@ body { display: block !important; flex-direction: unset !important; }
   display: block;
 }
 
-/* Hotspot tooltip container — positioned absolutely within the hotspot wrapper */
+/* Tooltip container — positioned by JS within the hotspot wrapper */
 .ccs-hotspots-tooltips {
   position: absolute !important;
   z-index: 10;
@@ -92,7 +69,7 @@ body { display: block !important; flex-direction: unset !important; }
   pointer-events: auto;
 }
 
-/* Hotspot tooltip card — matches 1WS qTip rendering */
+/* Tooltip card — background and shadow (qTip2 normally provides this) */
 .ccs-hotspots-tooltip {
   background: #fff;
   border-radius: 4px;
@@ -100,62 +77,22 @@ body { display: block !important; flex-direction: unset !important; }
   position: relative;
 }
 
+/* Close button — 1WS CSS handles positioning and the close.png sprite
+   via .qtip-close and span:before. We just need to ensure the button
+   itself has a visible background circle for the floating close icon. */
 .ccs-hotspots-tooltip .qtip-close {
-  position: absolute;
-  top: -16px;
-  right: -16px;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  border: none;
   background: #fff;
+  border: none;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
-  color: #666;
   padding: 0;
 }
 
-.ccs-hotspots-tooltip .qtip-close:hover {
-  color: #333;
-}
 
-.ccs-hotspots-tooltip .qtip-content {
-  padding: 0 16px;
-  line-height: 1.5;
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-.ccs-hotspots-tooltip .qtip-content > div {
-  padding: 16px 0;
-}
-
-.ccs-hotspots-tooltip .qtip-content > div > * + * {
-  margin-top: 0.7em;
-}
-
-.ccs-hotspots-tooltip .qtip-content img {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-}
-
-.ccs-hotspots-tooltip .qtip-content h4 {
-  text-align: center;
-  font-size: 1.2em;
-}
-
-.ccs-hotspots-tooltip .qtip-content p {
-  font-size: 0.95em;
-  line-height: 1.5;
-  color: #444;
-}
-
-/* Expanded view — hotspot instances: static rendering of the "popup open" state */
+/* --- 4. Expanded / Pastel review mode --- */
 
 /* Dim overlay on the composite image */
 .ccs-hotspot-expanded-dim {
@@ -178,17 +115,16 @@ body { display: block !important; flex-direction: unset !important; }
   width: 360px;
 }
 
-/* Remove close button in expanded static popups */
 .ccs-hotspot-expanded-popup .qtip-close {
   display: none;
 }
 
-/* Expanded view — whitespace between component sections (matches C2's ~40px module padding) */
+/* Section spacing */
 .preview-expanded .ccs-cc-inline-section + .ccs-cc-inline-section {
   margin-top: 40px !important;
 }
 
-/* Expanded view — tight spacing within carousel slide groups and hotspot instance groups */
+/* Tight spacing within carousel slides and hotspot instances */
 .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block {
   margin-top: 4px !important;
 }
@@ -197,14 +133,13 @@ body { display: block !important; flex-direction: unset !important; }
   margin-top: 4px !important;
 }
 
-/* Hide carousel controls in expanded mode (shouldn't exist but safety) */
+/* Hide carousel controls in expanded mode */
 .preview-expanded .ccs-cc-fc-custom-controls,
 .preview-expanded .ccs-cc-fc-arrows {
   display: none !important;
 }
 
-/* In expanded mode, only the active marker is shown per instance (rendered inline).
-   Hide any non-active markers that might exist from interactive init */
+/* Only the active marker shown per instance */
 .preview-expanded .ccs-hotspots-point:not(.ccs-hotspots-point-active) {
   display: none !important;
 }

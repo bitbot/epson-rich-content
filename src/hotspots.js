@@ -113,7 +113,9 @@ function initOneHotspot(container) {
     close.className = 'qtip-close';
     close.setAttribute('type', 'button');
     close.setAttribute('aria-label', 'Close');
-    close.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
+    /* Use <span> so 1WS CSS applies close.png via span:before { content: url() } */
+    var closeSpan = document.createElement('span');
+    close.appendChild(closeSpan);
 
     var content = document.createElement('div');
     content.className = 'qtip-content';

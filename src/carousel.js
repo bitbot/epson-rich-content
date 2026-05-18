@@ -73,7 +73,7 @@ function initOneCarousel(fc) {
     a.href = 'javascript:;';
     a.setAttribute('role', 'button');
     a.setAttribute('data-slide-index', d);
-    a.textContent = d + 1;
+    /* No visible text — 1WS dots are styled entirely via CSS background */
     li.appendChild(a);
     dotsUl.appendChild(li);
   }
