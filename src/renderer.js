@@ -1,5 +1,8 @@
 var PRODUCTS = [
-  { slug: 'et-2980u', name: 'ET-2980U' }
+  { slug: 'et-2980u', name: 'ET-2980U' },
+  { slug: 'et-3950u', name: 'ET-3950U' },
+  { slug: 'et-5850u', name: 'ET-5850U' },
+  { slug: 'et-16650u', name: 'ET-16650U' }
 ];
 
 function getRoute() {
@@ -66,14 +69,6 @@ function renderHero(hero) {
         '<img src="' + hero.image + '" alt="' + hero.alt + '"/>' +
       '</div>' +
       '<div class="ccs-cc-inline-feature-background" style="background-color:#ffffff; padding-top:' + hero.paddingTop + '; background-image:url(\'' + hero.image + '\'); background-size:cover; background-repeat:no-repeat; background-position:' + hero.bgPosition + '; background-attachment:scroll"></div>' +
-      '<div class="ccs-cc-inline-overlay-outer">' +
-        '<div class="ccs-cc-inline-overlay-inner ccs-cc-inline-feature" data-type="" data-desktop-media="false" data-text-row-position="center" data-text-column-position="left" data-media-row-position="center" data-media-column-position="right" data-text-width-unlimited="false" data-media-size-unlimited="false">' +
-          '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-media-container"></div>' +
-          '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description-container" style="width:45%">' +
-            '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description"></div>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
     '</div>' +
   '</div>';
 }
