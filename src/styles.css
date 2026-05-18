@@ -26,20 +26,11 @@ body { display: block !important; flex-direction: unset !important; }
   margin: 0 auto;
 }
 
-/* Carousel dots — 1WS uses font-size:0 + sprite backgrounds for dots.
-   We hide the text but force a fixed px size so the dot circle remains visible. */
+/* Carousel dots — hide the numeric text labels without collapsing
+   the em-based sizing from 1WS inline.css */
 .ccs-cc-inline .ccs-cc-fc .ccs-slick-dots li a {
-  font-size: 0 !important;
-  line-height: 0 !important;
+  color: transparent !important;
   overflow: hidden !important;
-  width: 8px !important;
-  height: 8px !important;
-}
-
-.ccs-cc-inline .ccs-cc-fc .ccs-slick-dots li {
-  width: auto !important;
-  height: auto !important;
-  margin: 6px !important;
 }
 
 /* Carousel arrow replacements (since we don't have the 1WS sprite image) */
