@@ -1,15 +1,14 @@
 /* ==========================================================================
    Epson Rich Content Preview — Custom Styles
 
-   PHILOSOPHY: Use the 1WS rendering system (inline.css, nogap.css) as-is.
-   Assets (sprites, fonts) are hosted at src/vendor/img/ and src/vendor/font/
-   so all 1WS url() references resolve naturally.
+   PHILOSOPHY: Use the 1WS rendering system (inline.css, nogap.css, jQuery,
+   qTip2) as-is. Assets (sprites, fonts) are hosted at src/vendor/ so all
+   CSS url() references resolve naturally.
 
    This file contains ONLY:
    1. Epson subscriber overrides (from 1WS custom.css — Epson's own config)
    2. Page shell (body, #app — our hosting context differs from 1WS iframe)
-   3. Interactive hotspot behavior (we don't load qTip2/jQuery)
-   4. Expanded/Pastel review mode (no 1WS equivalent)
+   3. Expanded/Pastel review mode (no 1WS equivalent)
    ========================================================================== */
 
 
@@ -43,56 +42,7 @@ body {
 }
 
 
-/* --- 3. Interactive hotspot behavior (replacing qTip2) --- */
-
-/* Backdrop — scoped to the hotspot wrapper, not the full viewport */
-.ccs-hotspot-overlay-backdrop {
-  display: none;
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 5;
-}
-
-.ccs-hotspot-overlay-backdrop.active {
-  display: block;
-}
-
-/* Tooltip container — positioned by JS within the hotspot wrapper */
-.ccs-hotspots-tooltips {
-  position: absolute !important;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.ccs-hotspots-tooltips .ccs-hotspots-tooltip {
-  pointer-events: auto;
-}
-
-/* Tooltip card — background and shadow (qTip2 normally provides this) */
-.ccs-hotspots-tooltip {
-  background: #fff;
-  border-radius: 4px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  position: relative;
-}
-
-/* Close button — 1WS CSS handles positioning and the close.png sprite
-   via .qtip-close and span:before. We just need to ensure the button
-   itself has a visible background circle for the floating close icon. */
-.ccs-hotspots-tooltip .qtip-close {
-  background: #fff;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-
-/* --- 4. Expanded / Pastel review mode --- */
+/* --- 3. Expanded / Pastel review mode --- */
 
 /* Dim overlay on the composite image */
 .ccs-hotspot-expanded-dim {

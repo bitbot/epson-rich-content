@@ -1,6 +1,26 @@
+/*
+ * Hotspot initialization — uses jQuery + qTip2 (same libraries as 1WS).
+ *
+ * Reads hotspot data from data-hotspots-json on the composite image,
+ * wraps it in the standard 1WS container structure, creates markers,
+ * and binds qTip tooltips with the same options 1WS uses.
+ *
+ * This replaces the custom tooltip positioning code that previously
+ * tried to replicate qTip behavior in vanilla JS.
+ */
+
+var HOTSPOT_CLASSES = {
+  root:        'ccs-hotspots',
+  iconSet:     'ccs-hotspots-default',
+  point:       'ccs-hotspots-point',
+  pointActive: 'ccs-hotspots-point-active',
+  tooltips:    'ccs-hotspots-tooltips',
+  tooltip:     'ccs-hotspots-tooltip',
+  pointSize:   32
+};
+
 function initHotspots() {
   var containers = document.querySelectorAll('.ccs-hotspots-container');
-
   for (var c = 0; c < containers.length; c++) {
     initOneHotspot(containers[c]);
   }
@@ -14,178 +34,118 @@ function initOneHotspot(container) {
   if (!jsonStr) return;
 
   var points;
-  try { points = JSON.parse(jsonStr); } catch(e) { return; }
+  try { points = JSON.parse(jsonStr); } catch (e) { return; }
+  if (!points.length) return;
 
-  /* Wrap image in positioned container */
-  var wrapper = document.createElement('div');
-  wrapper.className = 'ccs-hotspots ccs-hotspots-default';
-  img.parentNode.insertBefore(wrapper, img);
-  wrapper.appendChild(img);
+  var $img = $(img);
+  var $container = $(container);
 
-  /* Add markers */
-  for (var i = 0; i < points.length; i++) {
-    var pt = points[i];
-    var marker = document.createElement('button');
-    marker.className = 'ccs-hotspots-point';
-    marker.setAttribute('type', 'button');
-    marker.setAttribute('aria-label', pt.heading);
-    marker.setAttribute('data-point-index', i);
-    marker.style.left = (pt.x * 100) + '%';
-    marker.style.top = (pt.y * 100) + '%';
-    marker.style.transform = 'translate(-50%, -50%)';
-    wrapper.appendChild(marker);
-  }
+  /* Create the tooltips container (1WS appends to body; we scope to container
+     so expanded view instances stay independent) */
+  var $tooltipsContainer = $('<div>').addClass(HOTSPOT_CLASSES.tooltips);
+  $container.append($tooltipsContainer);
 
-  /* Backdrop — inside the wrapper so it overlays just the image */
-  var backdrop = document.createElement('div');
-  backdrop.className = 'ccs-hotspot-overlay-backdrop';
-  wrapper.appendChild(backdrop);
+  /* Wrap image in the standard 1WS hotspot root */
+  $img.removeAttr('data-hotspots-json')
+      .wrap($('<div>').addClass(HOTSPOT_CLASSES.root)
+                      .addClass(HOTSPOT_CLASSES.iconSet));
 
-  /* Tooltip container — inside the wrapper, absolutely positioned */
-  var tooltipContainer = document.createElement('div');
-  tooltipContainer.className = 'ccs-hotspots-tooltips';
-  tooltipContainer.style.display = 'none';
-  wrapper.appendChild(tooltipContainer);
+  /* Wait for image to be loaded so dimensions are known for positioning */
+  function setup() {
+    points.forEach(function (pt) {
+      /* Determine tooltip position relative to marker (1WS logic) */
+      var position = pt.position || 'top';
+      var posConfig = getPositionConfig(position);
 
-  var activePoint = null;
-
-  function positionTooltip(tooltipEl, markerX, markerY) {
-    /* Position tooltip near the marker, within the wrapper bounds.
-       Mimics 1WS qTip: tooltip appears beside the marker on the side
-       with more room. Uses percentage-based positioning. */
-    var tooltipW = 0.35; /* approximate tooltip width as fraction of wrapper */
-    var gap = 0.02;
-
-    /* Horizontal: place on side with more room */
-    var left;
-    if (markerX < 0.5) {
-      left = markerX + gap;
-    } else {
-      left = markerX - gap - tooltipW;
-    }
-    /* Clamp to keep within bounds */
-    left = Math.max(0.02, Math.min(left, 1 - tooltipW - 0.02));
-
-    /* Vertical: center on marker, clamp to bounds */
-    tooltipEl.style.position = 'absolute';
-    tooltipEl.style.left = (left * 100) + '%';
-    tooltipEl.style.width = (tooltipW * 100) + '%';
-    tooltipEl.style.maxWidth = '450px';
-
-    /* Vertically center near marker — use top with transform */
-    tooltipEl.style.top = (markerY * 100) + '%';
-    tooltipEl.style.transform = 'translateY(-50%)';
-
-    /* After render, check if it overflows and adjust */
-    requestAnimationFrame(function() {
-      var wrapperRect = wrapper.getBoundingClientRect();
-      var tipRect = tooltipEl.getBoundingClientRect();
-
-      /* Clamp vertical to stay within wrapper */
-      if (tipRect.top < wrapperRect.top) {
-        tooltipEl.style.top = '8px';
-        tooltipEl.style.transform = 'none';
-      } else if (tipRect.bottom > wrapperRect.bottom) {
-        tooltipEl.style.top = 'auto';
-        tooltipEl.style.bottom = '8px';
-        tooltipEl.style.transform = 'none';
+      /* Build tooltip content */
+      var $content = $('<div>');
+      if (pt.popupImage) {
+        $content.append($('<img>', { src: pt.popupImage, alt: pt.popupAlt || pt.heading }));
       }
+      if (pt.heading) {
+        $content.append($('<h4>').html(pt.heading));
+      }
+      if (pt.body) {
+        $content.append($('<div>').html(pt.body));
+      }
+
+      /* Create marker and bind qTip — mirrors 1WS de() function */
+      $('<div>')
+        .addClass(HOTSPOT_CLASSES.point)
+        .attr('tabindex', 0)
+        .css('top',  'calc(' + (pt.y * 100) + '% - ' + (HOTSPOT_CLASSES.pointSize / 2) + 'px)')
+        .css('left', 'calc(' + (pt.x * 100) + '% - ' + (HOTSPOT_CLASSES.pointSize / 2) + 'px)')
+        .insertBefore($img)
+        .qtip({
+          prerender: true,
+          content: {
+            text: $content,
+            button: 'Close'
+          },
+          show: {
+            event: 'click'
+          },
+          hide: {
+            fixed: true,
+            delay: 0,
+            event: 'unfocus'
+          },
+          style: {
+            classes: 'qtip-light qtip-shadow ' + HOTSPOT_CLASSES.tooltip + ' ' +
+                     HOTSPOT_CLASSES.tooltip + '-' + (pt.size || 'medium')
+          },
+          position: {
+            my: posConfig.my,
+            at: posConfig.at,
+            effect: false,
+            container: $tooltipsContainer,
+            viewport: $(window),
+            adjust: {
+              method: posConfig.method
+            }
+          },
+          events: {
+            show: function (event, api) {
+              /* Mark active */
+              api.elements.target.addClass(HOTSPOT_CLASSES.pointActive);
+            },
+            hide: function (event, api) {
+              /* Remove active */
+              api.elements.target.removeClass(HOTSPOT_CLASSES.pointActive);
+            },
+            render: function (event, api) {
+              /* Keyboard: Escape closes and returns focus to marker */
+              api.tooltip.attr('tabindex', 0).on('keydown', function (e) {
+                if (e.keyCode === 27) {
+                  api.hide();
+                  api.elements.target.focus();
+                  e.stopPropagation();
+                }
+              });
+            }
+          }
+        });
     });
   }
 
-  function openTooltip(index) {
-    var pt = points[index];
-    closeTooltip();
-    activePoint = index;
-
-    /* Highlight active marker */
-    var allMarkers = wrapper.querySelectorAll('.ccs-hotspots-point');
-    for (var m = 0; m < allMarkers.length; m++) {
-      allMarkers[m].classList.toggle('ccs-hotspots-point-active', m === index);
-      allMarkers[m].style.zIndex = (m === index) ? '8' : '';
-    }
-
-    var tooltip = document.createElement('div');
-    tooltip.className = 'ccs-hotspots-tooltip ccs-hotspots-tooltip-medium';
-    tooltip.setAttribute('tabindex', '-1');
-
-    var close = document.createElement('button');
-    close.className = 'qtip-close';
-    close.setAttribute('type', 'button');
-    close.setAttribute('aria-label', 'Close');
-    /* Use <span> so 1WS CSS applies close.png via span:before { content: url() } */
-    var closeSpan = document.createElement('span');
-    close.appendChild(closeSpan);
-
-    var content = document.createElement('div');
-    content.className = 'qtip-content';
-    var inner = document.createElement('div');
-
-    if (pt.popupImage) {
-      var popupImg = document.createElement('img');
-      popupImg.src = pt.popupImage;
-      popupImg.alt = pt.popupAlt || pt.heading;
-      inner.appendChild(popupImg);
-    }
-
-    var h4 = document.createElement('h4');
-    h4.innerHTML = pt.heading;
-    inner.appendChild(h4);
-
-    var desc = document.createElement('p');
-    desc.innerHTML = pt.body;
-    inner.appendChild(desc);
-
-    content.appendChild(inner);
-    tooltip.appendChild(close);
-    tooltip.appendChild(content);
-
-    tooltipContainer.innerHTML = '';
-    tooltipContainer.appendChild(tooltip);
-    tooltipContainer.style.display = '';
-
-    /* Position the tooltip near the marker */
-    positionTooltip(tooltipContainer, pt.x, pt.y);
-
-    backdrop.classList.add('active');
-
-    close.addEventListener('click', function(e) {
-      e.stopPropagation();
-      closeTooltip();
-    });
-    tooltip.focus();
+  /* If image already loaded, init immediately; otherwise wait */
+  if (img.complete && img.naturalWidth > 0) {
+    setup();
+  } else {
+    $img.one('load', setup);
   }
+}
 
-  function closeTooltip() {
-    tooltipContainer.innerHTML = '';
-    tooltipContainer.style.display = 'none';
-    backdrop.classList.remove('active');
-    activePoint = null;
-    var allMarkers = wrapper.querySelectorAll('.ccs-hotspots-point');
-    for (var m = 0; m < allMarkers.length; m++) {
-      allMarkers[m].classList.remove('ccs-hotspots-point-active');
-      allMarkers[m].style.zIndex = '';
-    }
+/* Position config — matches 1WS position logic in de() */
+function getPositionConfig(position) {
+  switch (position) {
+    case 'left':
+      return { my: 'center right', at: 'center left', method: 'flip shift' };
+    case 'right':
+      return { my: 'center left', at: 'center right', method: 'flip shift' };
+    case 'bottom':
+      return { my: 'top center', at: 'bottom center', method: 'shift flip' };
+    default: /* top */
+      return { my: 'bottom center', at: 'top center', method: 'shift flip' };
   }
-
-  wrapper.addEventListener('click', function(e) {
-    var marker = e.target.closest('.ccs-hotspots-point');
-    if (!marker) return;
-    e.stopPropagation();
-    var idx = parseInt(marker.getAttribute('data-point-index'), 10);
-    if (activePoint === idx) {
-      closeTooltip();
-    } else {
-      openTooltip(idx);
-    }
-  });
-
-  backdrop.addEventListener('click', function(e) {
-    e.stopPropagation();
-    closeTooltip();
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && activePoint !== null) closeTooltip();
-  });
 }
