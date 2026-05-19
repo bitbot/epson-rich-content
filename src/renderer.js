@@ -165,7 +165,7 @@ function renderHotspotsSection(hotspots, expanded) {
         '<img loading="lazy" src="' + hotspots.compositeImage + '" alt="' + hotspots.compositeAlt + '" class="ccs-hotspots-image" style="display:block; width:100%" />' +
         '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt.x * 100) + '%; top:' + (pt.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>' +
         '<div class="ccs-hotspot-expanded-popup" style="' + getExpandedPopupStyle(pt.x, pt.y) + '">' +
-          '<div class="ccs-hotspots-tooltip ccs-hotspots-tooltip-medium">' +
+          '<div class="qtip qtip-light qtip-shadow ccs-hotspots-tooltip ccs-hotspots-tooltip-medium" style="position:relative; left:auto; top:auto; display:block">' +
             '<div class="qtip-content"><div>' +
               (pt.popupImage ? '<img src="' + pt.popupImage + '" alt="' + (pt.popupAlt || pt.heading) + '" />' : '') +
               '<h4>' + pt.heading + '</h4>' +
