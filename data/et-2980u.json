@@ -122,8 +122,8 @@
     "compositeAlt": "EcoTank ET-2980U — front and scanner views",
     "points": [
       {
-        "x": 0.42,
-        "y": 0.62,
+        "x": 0.40,
+        "y": 0.68,
         "heading": "Uniquely Keyed EcoFit® Ink Bottles",
         "body": "Makes refilling ink simple. No mess, no stress and no ink bottle mix-ups.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-1.jpg",
@@ -131,8 +131,8 @@
         "position": "left"
       },
       {
-        "x": 0.12,
-        "y": 0.18,
+        "x": 0.26,
+        "y": 0.30,
         "heading": "Wireless Mobile Printing",
         "body": "Wirelessly print and scan from your PC or smart device<sup>4</sup>, including support for Apple® AirPrint®. Enjoy enhanced mobile printing from the Epson Smart Panel® App<sup>5</sup>.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-2.jpg",
@@ -140,8 +140,8 @@
         "position": "right"
       },
       {
-        "x": 0.22,
-        "y": 0.38,
+        "x": 0.19,
+        "y": 0.40,
         "heading": "1.44\" Color Display",
         "body": "Designed for simple navigation and printer management.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-3.jpg",
@@ -150,7 +150,7 @@
       },
       {
         "x": 0.72,
-        "y": 0.15,
+        "y": 0.22,
         "heading": "Built-In Color Scanner & Copier",
         "body": "Built-in high-resolution flatbed color scanner.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-4.jpg",
@@ -158,8 +158,8 @@
         "position": "bottom"
       },
       {
-        "x": 0.65,
-        "y": 0.72,
+        "x": 0.66,
+        "y": 0.67,
         "heading": "Stunning Print Quality",
         "body": "Powered by Epson PrecisionCore® print technology, EcoTank® produces incredible photographic print quality from a recognized leader in photographic printing.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-5.jpg",
@@ -167,8 +167,8 @@
         "position": "top"
       },
       {
-        "x": 0.18,
-        "y": 0.82,
+        "x": 0.17,
+        "y": 0.66,
         "heading": "Robust Paper Handling",
         "body": "100-sheet paper input tray and auto 2-sided printing.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-6.jpg",
