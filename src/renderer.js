@@ -44,9 +44,6 @@ function renderProduct(data, expanded) {
   var html = '<div class="' + cls + '">';
   html += '<div class="ccs-clear"></div>';
   html += renderHero(data.hero);
-  if (data.richText) {
-    html += renderRichTextSection(data.richText);
-  }
   for (var i = 0; i < data.carousels.length; i++) {
     html += renderCarouselSection(data.carousels[i], expanded);
   }
@@ -94,68 +91,6 @@ function renderSlide(slide) {
       '</div>' +
     '</div>' +
   '</div>';
-}
-
-function renderOverlayBlock(block) {
-  var hasImage = block.image && block.image.length > 0;
-  var cls = 'ccs-cc-inline-features-block ccs-cc-inline-overlay';
-  if (hasImage) cls += ' ccs-cc-aspect-ratio';
-
-  var html = '<div class="' + cls + '"';
-  if (hasImage) html += ' data-background="image" style="--ratio:' + block.ratio + '"';
-  html += '>';
-
-  if (hasImage) {
-    html += '<div class="ccs-cc-inline-feature-background-mobile">' +
-      '<img src="' + block.image + '" alt="' + (block.alt || '') + '"/>' +
-    '</div>' +
-    '<div class="ccs-cc-inline-feature-background" style="background-color:#ffffff; padding-top:' + block.paddingTop + '; background-image:url(\'' + block.image + '\'); background-size:cover; background-repeat:no-repeat; background-position:' + (block.bgPosition || 'center') + '; background-attachment:scroll"></div>';
-  }
-
-  var textRowPos = (block.textPosition && block.textPosition.row) || 'center';
-  var textColPos = (block.textPosition && block.textPosition.column) || 'left';
-
-  html += '<div class="ccs-cc-inline-overlay-outer">' +
-    '<div class="ccs-cc-inline-overlay-inner ccs-cc-inline-feature" data-type="text" data-desktop-media="false" data-text-row-position="' + textRowPos + '" data-text-column-position="' + textColPos + '" data-media-row-position="center" data-media-column-position="right" data-text-width-unlimited="' + (block.textWidth ? 'false' : 'true') + '" data-media-size-unlimited="false">' +
-      '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-media-container"></div>' +
-      '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description-container"' + (block.textWidth ? ' style="width:' + block.textWidth + '"' : ' style="width:100%"') + '>' +
-        '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description"' +
-          ' style="color:' + (block.textColor || '#ffffff') + '; background-color:' + (block.bgColor || 'rgba(0, 0, 0, 0.7)') + ';">' +
-          '<span style="font-size: 1.44em;"><b>' + block.heading + '</b></span>' +
-          '<div><br></div><div>' + block.body + '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div>';
-
-  html += '</div>';
-  return html;
-}
-
-function renderTextOnlyBlock(block) {
-  return '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature">' +
-    '<div class="ccs-cc-inline-feature" data-type="text">' +
-      '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description">' +
-        '<span style="font-size: 1.44em;"><b>' + block.heading + '</b></span>' +
-        '<div><br></div><div>' + block.body + '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div>';
-}
-
-function renderRichTextSection(blocks) {
-  var html = '';
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks[i];
-    html += '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
-    if (block.type === 'overlay') {
-      html += renderOverlayBlock(block);
-    } else if (block.type === 'textOnly') {
-      html += renderTextOnlyBlock(block);
-    }
-    html += '</div>';
-  }
-  return html;
 }
 
 function renderCarouselSection(carousel, expanded) {
