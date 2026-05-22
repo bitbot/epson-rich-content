@@ -13,6 +13,42 @@
     "paddingTop": "41.680%",
     "bgPosition": "center"
   },
+  "richText": [
+    {
+      "type": "overlay",
+      "heading": "Print Without Limits",
+      "body": "The EcoTank ET-2980U delivers affordable color printing with each included set of Epson EcoFit® ink bottles equivalent to about 80 ink cartridges<sup>1</sup>.",
+      "image": "assets/products/et-2980u/richtext-1.jpg",
+      "alt": "EcoTank ET-2980U — Print Without Limits",
+      "ratio": 2.39925,
+      "paddingTop": "41.680%",
+      "bgPosition": "center",
+      "textColor": "#ffffff",
+      "bgColor": "rgba(0, 0, 0, 0.7)",
+      "textWidth": "45%",
+      "textPosition": {
+        "row": "center",
+        "column": "left"
+      }
+    },
+    {
+      "type": "overlay",
+      "heading": "Powered by Epson ReadyPrint",
+      "body": "Get a new EcoTank printer plus upgrades. No up-front costs and a 30-day risk-free trial — starting at just $14.99/mo.",
+      "image": "assets/products/et-2980u/richtext-2.jpg",
+      "alt": "Epson ReadyPrint — Starting at $14.99/mo",
+      "ratio": 2.39925,
+      "paddingTop": "41.680%",
+      "bgPosition": "center",
+      "textColor": "#ffffff",
+      "bgColor": "rgba(0, 0, 0, 0.7)",
+      "textWidth": "45%",
+      "textPosition": {
+        "row": "center",
+        "column": "left"
+      }
+    }
+  ],
   "carousels": [
     {
       "id": "product",
@@ -141,7 +177,7 @@
       },
       {
         "x": 0.15,
-        "y": 0.40,
+        "y": 0.4,
         "heading": "1.44\" Color Display",
         "body": "Designed for simple navigation and printer management.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-3.jpg",
@@ -149,7 +185,7 @@
         "position": "right"
       },
       {
-        "x": 0.60,
+        "x": 0.6,
         "y": 0.39,
         "heading": "Built-In Color Scanner & Copier",
         "body": "Built-in high-resolution flatbed color scanner.",
