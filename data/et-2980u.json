@@ -2,18 +2,22 @@
   "product": {
     "sku": "ET-2980U",
     "name": "Epson EcoTank ET-2980U",
-    "fullName": "Epson EcoTank® ET-2980U Wireless All-in-One Supertank Printer",
+    "fullName": "Epson EcoTank\u00ae ET-2980U Wireless All-in-One Supertank Printer",
     "segment": "Home",
     "readyPrintPrice": "$14.99"
   },
   "hero": {
     "image": "assets/products/et-2980u/hero.jpg",
-    "alt": "Epson EcoTank ET-2980U — Print Without Limits",
+    "alt": "Epson EcoTank ET-2980U \u2014 Print Without Limits",
     "ratio": 2.39925,
     "paddingTop": "41.680%",
     "bgPosition": "center"
   },
-  "disclaimerStrip": "*Unlimited Ink Replenishment. Use the Epson Genuine Ink supplied with your ReadyPrint subscription. Subject to the ReadyPrint Terms of Use and the functional limitations for the printer hardware (ET-2980U 2,000 pages/month, ET-3850U 2,100 pages/month, ET-5850U 8,300 pages/month, ET-16650U 8,300 pages/month). See epson.com/readyprint-terms. All Unlimited Printing Plans require a 2-year commitment and printers must remain connected to the Internet. Available in the Contiguous US only.",
+  "disclaimerStrip": {
+    "bgColor": "#011133",
+    "fgColor": "#ffffff",
+    "content": "*Unlimited Ink Replenishment. Use the Epson Genuine Ink supplied with your ReadyPrint subscription. Subject to the ReadyPrint Terms of Use and the functional limitations for the printer hardware (ET-2980U 2,000 pages/month, ET-3850U 2,100 pages/month, ET-5850U 8,300 pages/month, ET-16650U 8,300 pages/month). See epson.com/readyprint-terms. All Unlimited Printing Plans require a 2-year commitment and printers must remain connected to the Internet. Available in the Contiguous US only."
+  },
   "carousels": [
     {
       "id": "product",
@@ -22,7 +26,7 @@
         {
           "navLabel": "Incredible Value",
           "heading": "Affordable Color Printing",
-          "body": "Each included set of Epson EcoFit® ink bottles is equivalent to about 80 ink cartridges<sup>1</sup>.",
+          "body": "Each included set of Epson EcoFit\u00ae ink bottles is equivalent to about 80 ink cartridges<sup>1</sup>.",
           "image": "assets/products/et-2980u/carousel-1-1-incrediblevalue.jpg",
           "alt": "EcoTank printer with ink bottles showing value comparison",
           "ratio": 2.39925,
@@ -41,7 +45,7 @@
         },
         {
           "navLabel": "Reliable Design",
-          "heading": "Our Most Reliable EcoTank® Ever",
+          "heading": "Our Most Reliable EcoTank\u00ae Ever",
           "body": "Unique permanent printhead with pro-grade engineering delivers improved everyday reliability.",
           "image": "assets/products/et-2980u/carousel-1-3-reliabledesign.jpg",
           "alt": "EcoTank printer reliable design engineering",
@@ -51,7 +55,7 @@
         },
         {
           "navLabel": "Stunning Print Quality",
-          "heading": "Unique Epson PrecisionCore® Print Technology",
+          "heading": "Unique Epson PrecisionCore\u00ae Print Technology",
           "body": "High 4,800 x 1,200 print resolution for sharp text & true photographic print quality.",
           "image": "assets/products/et-2980u/carousel-1-4-stunningprintquality.jpg",
           "alt": "High quality print samples from EcoTank",
@@ -120,29 +124,29 @@
   ],
   "hotspots": {
     "compositeImage": "assets/products/et-2980u/hotspot-composite.jpg",
-    "compositeAlt": "EcoTank ET-2980U — front and scanner views",
+    "compositeAlt": "EcoTank ET-2980U \u2014 front and scanner views",
     "points": [
       {
         "x": 0.86,
         "y": 0.64,
-        "heading": "Uniquely Keyed EcoFit® Ink Bottles",
+        "heading": "Uniquely Keyed EcoFit\u00ae Ink Bottles",
         "body": "Makes refilling ink simple. No mess, no stress and no ink bottle mix-ups.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-1.jpg",
-        "popupAlt": "Uniquely Keyed EcoFit® Ink Bottles",
+        "popupAlt": "Uniquely Keyed EcoFit\u00ae Ink Bottles",
         "position": "left"
       },
       {
         "x": 0.42,
         "y": 0.36,
         "heading": "Wireless Mobile Printing",
-        "body": "Wirelessly print and scan from your PC or smart device<sup>4</sup>, including support for Apple® AirPrint®. Enjoy enhanced mobile printing from the Epson Smart Panel® App<sup>5</sup>.",
+        "body": "Wirelessly print and scan from your PC or smart device<sup>4</sup>, including support for Apple\u00ae AirPrint\u00ae. Enjoy enhanced mobile printing from the Epson Smart Panel\u00ae App<sup>5</sup>.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-2.jpg",
         "popupAlt": "Wireless Mobile Printing",
         "position": "right"
       },
       {
         "x": 0.15,
-        "y": 0.40,
+        "y": 0.4,
         "heading": "1.44\" Color Display",
         "body": "Designed for simple navigation and printer management.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-3.jpg",
@@ -150,7 +154,7 @@
         "position": "right"
       },
       {
-        "x": 0.60,
+        "x": 0.6,
         "y": 0.39,
         "heading": "Built-In Color Scanner & Copier",
         "body": "Built-in high-resolution flatbed color scanner.",
@@ -162,7 +166,7 @@
         "x": 0.66,
         "y": 0.65,
         "heading": "Stunning Print Quality",
-        "body": "Powered by Epson PrecisionCore® print technology, EcoTank® produces incredible photographic print quality from a recognized leader in photographic printing.",
+        "body": "Powered by Epson PrecisionCore\u00ae print technology, EcoTank\u00ae produces incredible photographic print quality from a recognized leader in photographic printing.",
         "popupImage": "assets/products/et-2980u/hotspot-popup-5.jpg",
         "popupAlt": "Stunning Print Quality",
         "position": "top"
@@ -178,5 +182,5 @@
       }
     ]
   },
-  "disclaimers": "<h3>Disclaimers</h3><span style=\"font-size:0.8333333333333334em;\"><b>1</b> Individual cartridges estimate based on print yields of an included or replacement set of black and color ink bottles as compared to Epson standard-capacity ink cartridges for similarly featured printers as of March 2024. | <b>2</b> Based on average monthly document print volumes of about 125 pages. | <b>3</b> Worldwide 2011 – 10/2024. | <b>4</b> Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect™ enabled printers and compatible devices and apps, visit www.epson.com/connect | <b>5</b> Requires Epson Smart Panel app download. Data usage fees may apply.</span>"
+  "disclaimers": "<h3>Disclaimers</h3><span style=\"font-size:0.8333333333333334em;\"><b>1</b> Individual cartridges estimate based on print yields of an included or replacement set of black and color ink bottles as compared to Epson standard-capacity ink cartridges for similarly featured printers as of March 2024. | <b>2</b> Based on average monthly document print volumes of about 125 pages. | <b>3</b> Worldwide 2011 \u2013 10/2024. | <b>4</b> Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect\u2122 enabled printers and compatible devices and apps, visit www.epson.com/connect | <b>5</b> Requires Epson Smart Panel app download. Data usage fees may apply.</span>"
 }

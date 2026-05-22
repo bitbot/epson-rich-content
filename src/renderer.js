@@ -183,16 +183,31 @@ function renderHotspotsSection(hotspots, expanded) {
   return html;
 }
 
-function renderDisclaimerStrip(text) {
-  return '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
-    '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature">' +
-      '<div class="ccs-cc-inline-feature" data-type="text">' +
+function renderDisclaimerStrip(strip) {
+  var text = typeof strip === 'string' ? strip : strip.content;
+  var bgColor = typeof strip === 'object' ? strip.bgColor : null;
+  var fgColor = typeof strip === 'object' ? strip.fgColor : null;
+  var hasBackground = bgColor || fgColor;
+
+  var blockAttrs = hasBackground ? ' data-background="color"' : '';
+  var featureStyle = fgColor ? ' style="color: ' + fgColor + ';"' : '';
+
+  var html = '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+    '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature"' + blockAttrs + '>';
+
+  if (bgColor) {
+    html += '<div class="ccs-cc-inline-feature-background" style="background-color:' + bgColor + '"></div>';
+  }
+
+  html += '<div class="ccs-cc-inline-feature" data-type="text"' + featureStyle + '>' +
         '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description">' +
           '<span style="font-size:0.8333333333333334em;">' + text + '</span>' +
         '</div>' +
       '</div>' +
     '</div>' +
   '</div>';
+
+  return html;
 }
 
 function renderDisclaimersSection(disclaimers) {
