@@ -44,6 +44,9 @@ function renderProduct(data, expanded) {
   var html = '<div class="' + cls + '">';
   html += '<div class="ccs-clear"></div>';
   html += renderHero(data.hero);
+  if (data.disclaimerStrip) {
+    html += renderDisclaimerStrip(data.disclaimerStrip);
+  }
   for (var i = 0; i < data.carousels.length; i++) {
     html += renderCarouselSection(data.carousels[i], expanded);
   }
@@ -178,6 +181,18 @@ function renderHotspotsSection(hotspots, expanded) {
   }
   html += '</div>';
   return html;
+}
+
+function renderDisclaimerStrip(text) {
+  return '<div class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+    '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature">' +
+      '<div class="ccs-cc-inline-feature" data-type="text">' +
+        '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description">' +
+          '<span style="font-size:0.8333333333333334em;">' + text + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
 }
 
 function renderDisclaimersSection(disclaimers) {
