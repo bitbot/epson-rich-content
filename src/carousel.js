@@ -18,6 +18,7 @@ function initOneCarousel(fc) {
   var current = 0;
   var autoTimer = null;
   var SPEED = 5000;
+  var autoplayEnabled = !fc.classList.contains('ccs-cc-inline-noautoplay');
 
   fc.style.position = 'relative';
 
@@ -29,7 +30,7 @@ function initOneCarousel(fc) {
   var track = document.createElement('div');
   track.className = 'ccs-slick-track';
   track.style.display = 'flex';
-  track.style.transition = 'transform 0.4s ease';
+  track.style.transition = 'transform 0.5s ease';
 
   for (var i = 0; i < total; i++) {
     var slideWrapper = document.createElement('div');
@@ -91,12 +92,22 @@ function initOneCarousel(fc) {
   }
 
   function startAuto() {
+    if (!autoplayEnabled) return;
     stopAuto();
     autoTimer = setInterval(function() { goTo(current + 1); }, SPEED);
   }
 
   function stopAuto() {
     if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  /* Hover-pause: pause auto-advance on mouseenter/focusin, resume on
+     mouseleave/focusout. Matches 1WS Slick behavior from inline.min.js. */
+  if (autoplayEnabled) {
+    fc.addEventListener('mouseenter', function() { stopAuto(); });
+    fc.addEventListener('focusin', function() { stopAuto(); });
+    fc.addEventListener('mouseleave', function() { startAuto(); });
+    fc.addEventListener('focusout', function() { startAuto(); });
   }
 
   dotsUl.addEventListener('click', function(e) {
