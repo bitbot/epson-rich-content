@@ -194,7 +194,7 @@ function init1WS() {
     product: null,
     comparisonTable: null,
     augmentedReality: { autoLoad: false, launchInLightbox: false, autoLaunchAr: false, qrDisplayMode: 'page' }
-  }); } catch(initErr) { console.error('INIT_ERROR:', initErr.message, initErr.stack); }
+  }); } catch(initErr) { window._initError = initErr.message + ' ||| ' + initErr.stack; }
   var eq;
   try { eq = ccs_require('ElementQueries'); } catch(e) {}
   if (eq && eq.init) { eq.init('#' + INLINE_CONTENT_ID, { 'max-width': [570, 790, 680, 900] }); }
