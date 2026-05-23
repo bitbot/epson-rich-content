@@ -39,6 +39,14 @@
 <script>
 var INLINE_CONTENT_ID = 'inline-spike';
 
+
+// Image transform URL builder — mirrors 1WS CDN pattern (e.g. width(1200).jpg)
+// Uses the /img/ Pages Function for dynamic resizing.
+function imgTransform(path, transforms) {
+  if (!path || path.indexOf("http") === 0) return path;
+  if (path.charAt(0) !== "/") path = "/" + path;
+  return "/img/" + transforms + path;
+}
 function getRoute() {
   var params = new URLSearchParams(window.location.search);
   return { expanded: params.get('expand') === 'all' || params.get('expanded') === 'all' };
@@ -137,23 +145,19 @@ function renderCarouselSection(carousel, expanded) {
 function renderHotspotsSection(hotspots, expanded) {
   var html = '<div data-elementid="inline-content-hotspots[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">';
   if (!expanded) {
-    var imgUrl = hotspots.compositeImage;
-    if (imgUrl && imgUrl.indexOf('http') !== 0) imgUrl = '/' + imgUrl;
+    var imgUrl = imgTransform(hotspots.compositeImage, 'width(1200)');
     var hsData = [];
     for (var i = 0; i < hotspots.points.length; i++) {
       var pt = hotspots.points[i];
-      var pUrl = pt.popupImage;
-      if (pUrl && pUrl.indexOf('http') !== 0) pUrl = '/' + pUrl;
+      var pUrl = imgTransform(pt.popupImage, 'width(400)');
       hsData.push({ x: pt.x, y: pt.y, type: 'textimage', title: pt.heading.replace(/<[^>]*>/g, ''), description: pt.body, mediaUrl: pUrl, transcodedUrl: '', previewUrl: '', altText: (pt.popupAlt || pt.heading).replace(/<[^>]*>/g, '') });
     }
     html += '<div class="ccs-hotspots-container"><img loading="lazy" src="' + imgUrl + '" alt="' + (hotspots.compositeAlt || '') + '" class="ccs-hotspots-image" data-hotspots=\'' + JSON.stringify(hsData).replace(/'/g, '&#39;') + '\' /></div>';
   } else {
     for (var k = 0; k < hotspots.points.length; k++) {
       var pt2 = hotspots.points[k];
-      var cImg = hotspots.compositeImage;
-      if (cImg && cImg.indexOf('http') !== 0) cImg = '/' + cImg;
-      var pImg = pt2.popupImage;
-      if (pImg && pImg.indexOf('http') !== 0) pImg = '/' + pImg;
+      var cImg = imgTransform(hotspots.compositeImage, 'width(1200)');
+      var pImg = imgTransform(pt2.popupImage, 'width(400)');
       var popStyle = pt2.x < 0.5 ? 'right:5%;top:50%;transform:translateY(-50%)' : 'left:5%;top:50%;transform:translateY(-50%)';
       html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance"><div style="position:relative;display:inline-block;width:100%"><img src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" style="width:100%;display:block" /><div class="ccs-hotspot-expanded-dim"></div><button class="ccs-hotspots-point ccs-hotspots-point-active" type="button" style="position:absolute;left:' + (pt2.x*100) + '%;top:' + (pt2.y*100) + '%;transform:translate(-50%,-50%);z-index:3" aria-label="' + pt2.heading.replace(/"/g, '&quot;') + '"></button><div class="ccs-hotspot-expanded-popup" style="' + popStyle + '"><div class="ccs-hotspots-tooltip"><div class="qtip-content"><div>';
       if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
