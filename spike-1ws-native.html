@@ -83,7 +83,7 @@ function renderProduct(data, expanded) {
   html += '</div>';
   document.getElementById('app').innerHTML = html;
   document.title = data.product.name + ' — 1WS Native Spike';
-  if (!expanded) { init1WS(); }
+  if (!expanded) { window._1wsHtmlReady = true; }
 }
 
 function renderFeatureBlock(slide, isHero) {
@@ -177,11 +177,6 @@ function init1WS() {
   var initFn;
   try { initFn = ccs_require('inlineContent'); } catch(e) {}
   if (typeof initFn !== 'function') { setTimeout(init1WS, 100); return; }
-  // Wait for qTip — it loads after inline.min.js and is required for hotspots.
-  // ccs_require('qtip') returns undefined (side-effect module), so check jQuery.fn.qtip instead.
-  var jq;
-  try { jq = ccs_require('jquery'); } catch(e) {}
-  if (!jq || !jq.fn || !jq.fn.qtip) { setTimeout(init1WS, 100); return; }
   initFn({
     inlineContentId: INLINE_CONTENT_ID,
     logCall: '{"logFunctionName":"ccs_cc_noop","paramsFunctionName":"ccs_cc_noop","eventId":"spike"}',
@@ -224,5 +219,13 @@ loadProduct();
 <script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/slick/slick.modified.min.js"></script>
 <script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/ContentCast/Inline/inline.min.js"></script>
 <script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/qtip/jquery.qtip.modified.min.js"></script>
+<script>
+// Init after all CDN scripts have loaded (matches reference pattern where
+// the init call is in a <script> block after all vendor scripts).
+// HTML rendering is async (fetch), so poll for readiness.
+(function waitAndInit() {
+  if (window._1wsHtmlReady) { init1WS(); } else { setTimeout(waitAndInit, 50); }
+})();
+</script>
 </body>
 </html>
