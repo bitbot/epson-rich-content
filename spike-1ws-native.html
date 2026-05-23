@@ -59,15 +59,24 @@ function renderProduct(data, expanded) {
   if (expanded) cls += ' preview-expanded';
   var html = '<div id="' + INLINE_CONTENT_ID + '" class="' + cls + '">';
   html += '<div class="ccs-clear"></div>';
+  // Hero + first carousel share a features section wrapper (matches 1WS reference structure)
+  html += '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
   html += renderFeatureBlock(data.hero, true);
   if (data.disclaimerStrip) {
+    html += '</div>'; // close features section before disclaimer strip
     html += renderTextOnly(data.disclaimerStrip.content, data.disclaimerStrip.bgColor, data.disclaimerStrip.fgColor);
+    html += '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
   }
-  for (var i = 0; i < data.carousels.length; i++) {
+  if (data.carousels.length > 0) {
+    html += renderCarouselInner(data.carousels[0], expanded);
+  }
+  html += '</div>'; // close first features section
+  for (var i = 1; i < data.carousels.length; i++) {
     html += renderCarouselSection(data.carousels[i], expanded);
   }
   html += renderHotspotsSection(data.hotspots, expanded);
-  html += renderTextOnly(data.disclaimers.content);
+  var disclaimerContent = typeof data.disclaimers === 'string' ? data.disclaimers : (data.disclaimers && data.disclaimers.content ? data.disclaimers.content : '');
+  if (disclaimerContent) html += renderTextOnly(disclaimerContent);
   html += '<div class="ccs-cc-inline-ensure-style-loaded" style="display:none;width:0;height:0;"></div>';
   html += '</div>';
   document.getElementById('app').innerHTML = html;
@@ -97,8 +106,9 @@ function renderFeatureBlock(slide, isHero) {
   return html;
 }
 
-function renderCarouselSection(carousel, expanded) {
-  var html = '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
+function renderCarouselInner(carousel, expanded) {
+  // Renders carousel content WITHOUT a section wrapper (for when it's inside an existing section)
+  var html = '';
   if (expanded) {
     for (var i = 0; i < carousel.slides.length; i++) {
       html += renderFeatureBlock(carousel.slides[i], false);
@@ -114,8 +124,12 @@ function renderCarouselSection(carousel, expanded) {
     html += '<div class="ccs-cc-fc-arrows"><a class="ccs-cc-fc-arrow ccs-slick-prev" href="javascript:;" role="button" data-role="none" aria-label="show previous slide"><span></span></a><a class="ccs-cc-fc-arrow ccs-slick-next" href="javascript:;" role="button" data-role="none" aria-label="show next slide"><span></span></a></div>';
     html += '</div>';
   }
-  html += '</div>';
   return html;
+}
+
+function renderCarouselSection(carousel, expanded) {
+  // Renders carousel WITH its own section wrapper (for standalone carousels)
+  return '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' + renderCarouselInner(carousel, expanded) + '</div>';
 }
 
 function renderHotspotsSection(hotspots, expanded) {
