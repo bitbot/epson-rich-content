@@ -177,6 +177,10 @@ function init1WS() {
   var initFn;
   try { initFn = ccs_require('inlineContent'); } catch(e) {}
   if (typeof initFn !== 'function') { setTimeout(init1WS, 100); return; }
+  // Wait for qTip module — it loads after inline.min.js and is required for hotspots
+  var qtipMod;
+  try { qtipMod = ccs_require('qtip'); } catch(e) {}
+  if (!qtipMod) { setTimeout(init1WS, 100); return; }
   initFn({
     inlineContentId: INLINE_CONTENT_ID,
     logCall: '{"logFunctionName":"ccs_cc_noop","paramsFunctionName":"ccs_cc_noop","eventId":"spike"}',
