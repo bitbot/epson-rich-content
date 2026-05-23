@@ -177,7 +177,7 @@ function init1WS() {
   var initFn;
   try { initFn = ccs_require('inlineContent'); } catch(e) {}
   if (typeof initFn !== 'function') { setTimeout(init1WS, 100); return; }
-  initFn({
+  try { initFn({
     inlineContentId: INLINE_CONTENT_ID,
     logCall: '{"logFunctionName":"ccs_cc_noop","paramsFunctionName":"ccs_cc_noop","eventId":"spike"}',
     isRtl: false,
@@ -194,13 +194,14 @@ function init1WS() {
     product: null,
     comparisonTable: null,
     augmentedReality: { autoLoad: false, launchInLightbox: false, autoLaunchAr: false, qrDisplayMode: 'page' }
-  });
+  }); } catch(initErr) { console.error('INIT_ERROR:', initErr.message, initErr.stack); }
   var eq;
   try { eq = ccs_require('ElementQueries'); } catch(e) {}
   if (eq && eq.init) { eq.init('#' + INLINE_CONTENT_ID, { 'max-width': [570, 790, 680, 900] }); }
 }
 
 window.ccs_cc_noop = function() {};
+window.addEventListener('error', function(e) { console.error('UNCAUGHT:', e.message, e.filename, e.lineno); });
 loadProduct();
 </script>
 
