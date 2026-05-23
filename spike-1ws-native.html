@@ -173,18 +173,7 @@ function renderHotspotsSection(hotspots, expanded) {
       var pt2 = hotspots.points[k];
       var cImg = imgTransform(hotspots.compositeImage, 'width(1200)');
       var pImg = imgTransform(pt2.popupImage, 'width(400)');
-      // Position popup near the point using the position hint from data
-      var pos = pt2.position || (pt2.x < 0.5 ? 'right' : 'left');
-      var popStyle;
-      if (pos === 'left') {
-        popStyle = 'right:' + ((1 - pt2.x)*100 + 3) + '%;top:' + (pt2.y*100) + '%;transform:translateY(-50%)';
-      } else if (pos === 'right') {
-        popStyle = 'left:' + (pt2.x*100 + 3) + '%;top:' + (pt2.y*100) + '%;transform:translateY(-50%)';
-      } else if (pos === 'top') {
-        popStyle = 'left:' + (pt2.x*100) + '%;bottom:' + ((1 - pt2.y)*100 + 3) + '%;transform:translateX(-50%)';
-      } else {
-        popStyle = 'left:' + (pt2.x*100) + '%;top:' + (pt2.y*100 + 3) + '%;transform:translateX(-50%)';
-      }
+      var popStyle = pt2.x < 0.5 ? 'left:' + (pt2.x*100 + 3) + '%;top:50%;transform:translateY(-50%)' : 'right:' + ((1 - pt2.x)*100 + 3) + '%;top:50%;transform:translateY(-50%)';
       html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance"><div style="position:relative;display:inline-block;width:100%"><img src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" style="width:100%;display:block" /><div class="ccs-hotspot-expanded-dim"></div><button class="ccs-hotspots-point ccs-hotspots-point-active" type="button" style="position:absolute;left:' + (pt2.x*100) + '%;top:' + (pt2.y*100) + '%;transform:translate(-50%,-50%);z-index:3" aria-label="' + pt2.heading.replace(/"/g, '&quot;') + '"></button><div class="ccs-hotspot-expanded-popup" style="' + popStyle + '"><div class="ccs-hotspots-tooltip"><div class="qtip-content"><div>';
       if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
       html += '<h4>' + pt2.heading + '</h4><p>' + pt2.body + '</p></div></div></div></div></div></div>';
