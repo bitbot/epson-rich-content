@@ -177,11 +177,7 @@ function init1WS() {
   var initFn;
   try { initFn = ccs_require('inlineContent'); } catch(e) {}
   if (typeof initFn !== 'function') { setTimeout(init1WS, 100); return; }
-  // Debug: check le() preconditions before and after init
-  var jqPre = ccs_require('jquery');
-  var preFindLen = jqPre('#' + INLINE_CONTENT_ID).find('.ccs-hotspots-image').length;
-  window._preInit = { imgFound: preFindLen, qtipAvail: typeof jqPre.fn.qtip };
-  try { initFn({
+  initFn({
     inlineContentId: INLINE_CONTENT_ID,
     logCall: '{"logFunctionName":"ccs_cc_noop","paramsFunctionName":"ccs_cc_noop","eventId":"spike"}',
     isRtl: false,
@@ -198,15 +194,13 @@ function init1WS() {
     product: null,
     comparisonTable: null,
     augmentedReality: { autoLoad: false, launchInLightbox: false, autoLaunchAr: false, qrDisplayMode: 'page' }
-  }); } catch(initErr) { window._initError = initErr.message + ' ||| ' + initErr.stack; }
-  window._postInit = { hotspotPoints: document.querySelectorAll('.ccs-hotspots-point').length, hotspotsDefault: !!document.querySelector('.ccs-hotspots-default'), dataAttrGone: !(document.querySelector('.ccs-hotspots-image') && document.querySelector('.ccs-hotspots-image').hasAttribute('data-hotspots')) };
+  });
   var eq;
   try { eq = ccs_require('ElementQueries'); } catch(e) {}
   if (eq && eq.init) { eq.init('#' + INLINE_CONTENT_ID, { 'max-width': [570, 790, 680, 900] }); }
 }
 
 window.ccs_cc_noop = function() {};
-window.addEventListener('error', function(e) { console.error('UNCAUGHT:', e.message, e.filename, e.lineno); });
 loadProduct();
 </script>
 
@@ -230,7 +224,11 @@ loadProduct();
 // the init call is in a <script> block after all vendor scripts).
 // HTML rendering is async (fetch), so poll for readiness.
 (function waitAndInit() {
-  if (window._1wsHtmlReady) { init1WS(); } else { setTimeout(waitAndInit, 50); }
+  if (!window._1wsHtmlReady) { setTimeout(waitAndInit, 50); return; }
+  // Force qTip factory to run before init (side-effect module —
+  // factory installs jQuery.fn.qtip but returns undefined)
+  try { ccs_require('qtip'); } catch(e) {}
+  init1WS();
 })();
 </script>
 </body>
