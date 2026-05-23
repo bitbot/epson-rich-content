@@ -4,20 +4,347 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Epson Rich Content Preview</title>
-<link rel="stylesheet" href="https://use.typekit.net/mgt5dwg.css">
-<link rel="stylesheet" href="src/vendor/Inline.css">
-<link rel="stylesheet" href="src/vendor/nogap.css">
-<link rel="stylesheet" href="src/vendor/jquery.fancybox.css">
-<link rel="stylesheet" href="src/styles.css">
+<script>
+  window["ccs_cc_initParams"] = ["d5eea376", "ws.cs.1worldsync.com"];
+</script>
+<style>
+  body {
+    margin: 0; padding: 0; background: #fff;
+    font-family: "motiva-sans", Motiva, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { display: block !important; flex-direction: unset !important; }
+  #app { max-width: 1400px; margin: 0 auto; }
+
+  /* --- Expanded / Pastel review mode --- */
+  .preview-expanded .ccs-cc-inline-section + .ccs-cc-inline-section { margin-top: 40px !important; }
+  .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block { margin-top: 4px !important; }
+  .preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance { margin-top: 4px !important; }
+  .preview-expanded .ccs-cc-fc-custom-controls, .preview-expanded .ccs-cc-fc-arrows { display: none !important; }
+  .preview-expanded .ccs-hotspots-point:not(.ccs-hotspots-point-active) { display: none !important; }
+
+  /* Expanded hotspot point styling (outside 1WS wrapper) */
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point {
+    width: 32px; height: 32px; border-radius: 50%; border: 1px dashed transparent;
+    background-color: #504d56; cursor: pointer; box-sizing: border-box; padding: 0;
+    -webkit-appearance: none; appearance: none;
+  }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:hover { background-color: #83838f; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after,
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before {
+    content: ""; background-color: #fff; position: absolute; border-radius: 1px;
+    transform: rotate(45deg);
+  }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before { width: 2px; height: 16px; top: 7px; left: 14px; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after { width: 16px; height: 2px; top: 14px; left: 7px; }
+
+  /* Expanded hotspot popup */
+  .ccs-hotspot-expanded-dim { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2; pointer-events: none; }
+  .ccs-hotspot-expanded-popup { position: absolute; z-index: 4; pointer-events: none; }
+  .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip { position: relative; width: 360px; }
+  .ccs-hotspot-expanded-popup .qtip-close { display: none; }
+  .ccs-hotspot-expanded-popup .qtip-content { padding: 0 16px; line-height: 1.5; }
+  .ccs-hotspot-expanded-popup .qtip-content > div { padding: 16px 0; }
+  .ccs-hotspot-expanded-popup .qtip-content img { display: block; margin: 0 auto; max-width: 100%; }
+  .ccs-hotspot-expanded-popup .qtip-content h4 { text-align: center; font-size: 1.2em; }
+  .ccs-hotspot-expanded-popup .qtip-content p { font-size: 0.95em; line-height: 1.5; color: #444; }
+</style>
 </head>
 <body>
 <div id="app"></div>
-<script src="src/vendor/jquery.min.js"></script>
-<script src="src/vendor/jquery.qtip.min.js"></script>
-<script>/* 1WS jQuery namespaces as ccsJq; expose standard aliases for our code */
-window.jQuery = window.$ = window.ccsJq;</script>
-<script src="src/renderer.js"></script>
-<script src="src/carousel.js"></script>
-<script src="src/hotspots.js"></script>
+
+<script>
+var INLINE_CONTENT_ID = 'inline-content';
+
+var PRODUCTS = [
+  { slug: 'et-2980u', name: 'ET-2980U' },
+  { slug: 'et-3950u', name: 'ET-3950U' },
+  { slug: 'et-5850u', name: 'ET-5850U' },
+  { slug: 'et-16650u', name: 'ET-16650U' }
+];
+
+function getRoute() {
+  var path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  var params = new URLSearchParams(window.location.search);
+  return { path: path || '', expanded: params.get('expand') === 'all' || params.get('expanded') === 'all' };
+}
+
+function route() {
+  var r = getRoute();
+  var app = document.getElementById('app');
+
+  if (!r.path) {
+    app.innerHTML = '<div style="padding:40px;font-family:sans-serif;font-size:14px">' +
+      PRODUCTS.map(function(p) {
+        return '<a href="/' + p.slug + '">' + p.name + '</a>';
+      }).join(' | ') + '</div>';
+    return;
+  }
+
+  app.innerHTML = '<div style="padding:40px;text-align:center;color:#999;font-family:sans-serif">Loading…</div>';
+  loadProduct(r.path, r.expanded);
+}
+
+function loadProduct(slug, expanded) {
+  fetch('/data/' + slug + '.json')
+    .then(function(r) { if (!r.ok) throw new Error('Not found'); return r.json(); })
+    .then(function(data) { renderProduct(data, expanded); })
+    .catch(function(err) {
+      document.getElementById('app').innerHTML =
+        '<div style="padding:40px;text-align:center;color:#c00;font-family:sans-serif">' + err.message + '</div>';
+    });
+}
+
+function renderProduct(data, expanded) {
+  var cls = 'ccs-cc-inline ccs-cc-inline-eps ccs-cc-lang-enusa ccs-cc-lightbox-disabled ccs-cc-block-inline';
+  if (expanded) cls += ' preview-expanded';
+
+  var html = '<div id="' + INLINE_CONTENT_ID + '" class="' + cls + '">';
+  html += '<div class="ccs-clear"></div>';
+
+  /* Hero + first carousel share a features section (matches 1WS reference structure) */
+  html += '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
+  html += renderFeatureBlock(data.hero, true);
+
+  if (data.disclaimerStrip) {
+    html += '</div>'; /* close features section before disclaimer strip */
+    html += renderDisclaimerStrip(data.disclaimerStrip);
+    html += '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
+  }
+
+  if (data.carousels.length > 0) {
+    html += renderCarouselInner(data.carousels[0], expanded);
+  }
+  html += '</div>'; /* close first features section */
+
+  for (var i = 1; i < data.carousels.length; i++) {
+    html += renderCarouselSection(data.carousels[i], expanded);
+  }
+
+  html += renderHotspotsSection(data.hotspots, expanded);
+
+  var disclaimerContent = typeof data.disclaimers === 'string' ? data.disclaimers : (data.disclaimers && data.disclaimers.content ? data.disclaimers.content : '');
+  if (disclaimerContent) html += renderDisclaimersSection(disclaimerContent);
+
+  html += '<div class="ccs-cc-inline-ensure-style-loaded" style="display:none;width:0;height:0;"></div>';
+  html += '</div>';
+
+  document.getElementById('app').innerHTML = html;
+  document.title = data.product.name + ' — 1WS Preview';
+
+  if (!expanded) { window._1wsHtmlReady = true; }
+}
+
+function renderFeatureBlock(slide, isHero) {
+  var bgPos = slide.bgPosition || 'center';
+  var imgUrl = slide.image;
+  if (imgUrl && imgUrl.indexOf('http') !== 0) imgUrl = '/' + imgUrl;
+
+  var html = '<div class="ccs-cc-inline-features-block ccs-cc-inline-overlay ccs-cc-aspect-ratio" data-background="image" style="--ratio:' + slide.ratio + '">';
+  html += '<div class="ccs-cc-inline-feature-background-mobile"><img src="' + imgUrl + '" alt="' + (slide.alt || '') + '"/></div>';
+  html += '<div class="ccs-cc-inline-feature-background" style="background-color:#ffffff; padding-top:' + slide.paddingTop + "; background-image:url('" + imgUrl + "'); background-size:cover; background-repeat:no-repeat; background-position:" + bgPos + '; background-attachment:scroll"></div>';
+
+  var hasText = !isHero && slide.heading;
+  var dataType = hasText ? 'text' : '';
+  var twu = hasText ? 'true' : 'false';
+  var dw = hasText ? '100%' : '45%';
+
+  html += '<div class="ccs-cc-inline-overlay-outer"><div class="ccs-cc-inline-overlay-inner ccs-cc-inline-feature" data-type="' + dataType + '" data-desktop-media="false" data-text-row-position="center" data-text-column-position="left" data-media-row-position="center" data-media-column-position="right" data-text-width-unlimited="' + twu + '" data-media-size-unlimited="false">';
+  html += '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-media-container" style=""></div>';
+  html += '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description-container" style="width:' + dw + '">';
+  html += '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description" style="' + (hasText ? 'color:#ffffff; background-color:rgba(0, 0, 0, 0.7);' : '') + '">';
+  if (hasText) {
+    html += '<span style="font-size: 1.44em;"><b>' + slide.heading + '</b></span><div><br></div>' + (slide.body || '');
+  }
+  html += '</div></div></div></div></div>';
+  return html;
+}
+
+function renderCarouselInner(carousel, expanded) {
+  var html = '';
+  if (expanded) {
+    for (var i = 0; i < carousel.slides.length; i++) {
+      html += renderFeatureBlock(carousel.slides[i], false);
+    }
+  } else {
+    html += '<div class="ccs-cc-inline-features-block ccs-cc-fc ccs-cc-inline-noautoplay">';
+    html += '<div class="ccs-cc-fc-items" tabindex="0">';
+    for (var j = 0; j < carousel.slides.length; j++) {
+      html += renderFeatureBlock(carousel.slides[j], false);
+    }
+    html += '</div>';
+    html += '<div class="ccs-cc-fc-custom-controls"><a class="ccs-cc-fc-play-pause-btn ccs-pause" href="javascript:;" role="button" data-role="none" aria-label="click to pause"><span></span></a></div>';
+    html += '<div class="ccs-cc-fc-arrows"><a class="ccs-cc-fc-arrow ccs-slick-prev" href="javascript:;" role="button" data-role="none" aria-label="show previous slide"><span></span></a><a class="ccs-cc-fc-arrow ccs-slick-next" href="javascript:;" role="button" data-role="none" aria-label="show next slide"><span></span></a></div>';
+    html += '</div>';
+  }
+  return html;
+}
+
+function renderCarouselSection(carousel, expanded) {
+  return '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' + renderCarouselInner(carousel, expanded) + '</div>';
+}
+
+function renderDisclaimerStrip(strip) {
+  var text = typeof strip === 'string' ? strip : strip.content;
+  var bgColor = typeof strip === 'object' ? strip.bgColor : null;
+  var fgColor = typeof strip === 'object' ? strip.fgColor : null;
+  var hasBackground = bgColor || fgColor;
+
+  var blockAttrs = hasBackground ? ' data-background="color"' : '';
+  var featureStyle = fgColor ? ' style="color: ' + fgColor + ';"' : '';
+
+  var html = '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">';
+  html += '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature"' + blockAttrs + '>';
+  if (bgColor) {
+    html += '<div class="ccs-cc-inline-feature-background" style="background-color:' + bgColor + '"></div>';
+  }
+  html += '<div class="ccs-cc-inline-feature" data-type="text"' + featureStyle + '>';
+  html += '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description">';
+  html += '<span style="font-size:0.8333333333333334em;">' + text + '</span>';
+  html += '</div></div></div></div>';
+  return html;
+}
+
+function renderHotspotsSection(hotspots, expanded) {
+  var html = '<div data-elementid="inline-content-hotspots[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">';
+
+  if (!expanded) {
+    /* Interactive mode: render composite image with data-hotspots attribute for 1WS init */
+    var imgUrl = hotspots.compositeImage;
+    if (imgUrl && imgUrl.indexOf('http') !== 0) imgUrl = '/' + imgUrl;
+
+    var hsData = [];
+    for (var i = 0; i < hotspots.points.length; i++) {
+      var pt = hotspots.points[i];
+      var pUrl = pt.popupImage;
+      if (pUrl && pUrl.indexOf('http') !== 0) pUrl = '/' + pUrl;
+      hsData.push({
+        x: pt.x, y: pt.y, type: 'textimage',
+        title: pt.heading.replace(/<[^>]*>/g, ''),
+        description: pt.body,
+        mediaUrl: pUrl, transcodedUrl: '', previewUrl: '',
+        altText: (pt.popupAlt || pt.heading).replace(/<[^>]*>/g, '')
+      });
+    }
+
+    html += '<div class="ccs-hotspots-container"><img loading="lazy" src="' + imgUrl + '" alt="' + (hotspots.compositeAlt || '') + '" class="ccs-hotspots-image" data-hotspots=\'' + JSON.stringify(hsData).replace(/'/g, '&#39;') + '\' /></div>';
+  } else {
+    /* Expanded mode: each point gets its own composite instance with popup */
+    for (var k = 0; k < hotspots.points.length; k++) {
+      var pt2 = hotspots.points[k];
+      var cImg = hotspots.compositeImage;
+      if (cImg && cImg.indexOf('http') !== 0) cImg = '/' + cImg;
+      var pImg = pt2.popupImage;
+      if (pImg && pImg.indexOf('http') !== 0) pImg = '/' + pImg;
+
+      var popStyle = getExpandedPopupStyle(pt2.x, pt2.y);
+
+      html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">';
+      html += '<div class="ccs-hotspots ccs-hotspots-default" style="position:relative; display:inline-block; width:100%">';
+      html += '<div class="ccs-hotspot-expanded-dim"></div>';
+      html += '<img loading="lazy" src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" class="ccs-hotspots-image" style="display:block; width:100%" />';
+      html += '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt2.x * 100) + '%; top:' + (pt2.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>';
+      html += '<div class="ccs-hotspot-expanded-popup" style="' + popStyle + '">';
+      html += '<div class="qtip qtip-light qtip-shadow ccs-hotspots-tooltip ccs-hotspots-tooltip-medium" style="position:relative; left:auto; top:auto; display:block">';
+      html += '<div class="qtip-content"><div>';
+      if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g, '&quot;') + '" />';
+      html += '<h4>' + pt2.heading + '</h4>';
+      html += '<p>' + pt2.body + '</p>';
+      html += '</div></div></div></div></div></div>';
+    }
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function getExpandedPopupStyle(mx, my) {
+  var popupW = 0.30;
+  var hGap = 0.02;
+  var left;
+  if (mx < 0.5) {
+    left = mx + hGap;
+  } else {
+    left = mx - hGap - popupW;
+  }
+  left = Math.max(0.02, Math.min(left, 1 - 0.02 - popupW));
+  return 'left:' + (left * 100).toFixed(1) + '%; top:50%; transform:translateY(-50%)';
+}
+
+function renderDisclaimersSection(content) {
+  return '<div data-elementid="inline-content-features[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-features" data-display-mode="noheader">' +
+    '<div class="ccs-cc-inline-features-block ccs-cc-inline-single-feature">' +
+      '<div class="ccs-cc-inline-feature" data-type="text">' +
+        '<div class="ccs-cc-inline-feature-content ccs-cc-inline-feature-description">' +
+          content +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function init1WS() {
+  if (typeof ccs_require === 'undefined') { setTimeout(init1WS, 50); return; }
+  var initFn;
+  try { initFn = ccs_require('inlineContent'); } catch(e) {}
+  if (typeof initFn !== 'function') { setTimeout(init1WS, 100); return; }
+  initFn({
+    inlineContentId: INLINE_CONTENT_ID,
+    logCall: '{"logFunctionName":"ccs_cc_noop","paramsFunctionName":"ccs_cc_noop","eventId":"preview"}',
+    isRtl: false,
+    containerClass: 'ccs-cc-inline-eps',
+    video: { pluginPath: 'https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/videoPlayer/mediaelementjs3/', disableCC: false },
+    lightbox: { disabled: true, backButtonText: 'Back', poweredByLogoUrl: '', poweredByAltText: '' },
+    jumplinks: { enabled: false, description: '' },
+    media: { showLargeImg: 'show larger image', zoomIn: 'zoom in', slidePosition: 'slide {0} of {1}' },
+    features: { autoPlayVideoInViewPort: false, carousel: { speed: 5000, arrows: true, points: true, playpause: false }, disableLazyLoad: true, swapBreakpoint: 570, zoom: { enabled: false } },
+    hotspots: {},
+    accordion: { expandedText: 'hides content', collapsedText: 'shows more content' },
+    spritespin: null,
+    footer: { anchorOffScreenText: 'footnote' },
+    product: null,
+    comparisonTable: null,
+    augmentedReality: { autoLoad: false, launchInLightbox: false, autoLaunchAr: false, qrDisplayMode: 'page' }
+  });
+  var eq;
+  try { eq = ccs_require('ElementQueries'); } catch(e) {}
+  if (eq && eq.init) { eq.init('#' + INLINE_CONTENT_ID, { 'max-width': [570, 790, 680, 900] }); }
+}
+
+window.ccs_cc_noop = function() {};
+window.addEventListener('popstate', route);
+route();
+</script>
+
+<!-- 1WS CDN: Fonts -->
+<link href="https://cdn.cs.1worldsync.com/syndication/inlinecontent/fonts/motivasans/stylesheet.css" rel="stylesheet">
+<!-- 1WS CDN: Core CSS -->
+<link href="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/ContentCast/Inline/Inline.css" rel="stylesheet">
+<link href="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/ContentCast/Inline/themes/nogap.css" rel="stylesheet">
+<link href="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/fancybox3/jquery.fancybox.css" rel="stylesheet">
+<link href="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/videoPlayer/mediaelementjs3/mediaelementjs.css" rel="stylesheet">
+<!-- 1WS CDN: Epson subscriber CSS -->
+<link href="https://cdn.cs.1worldsync.com/redirect/gp-subscriber-files/d5eea376/9b7e706240/Style.Minified/20241213111716.css" rel="stylesheet">
+<link href="https://cdn.cs.1worldsync.com/redirect/gp-vendor-files/17/vendor.20210414.css" rel="stylesheet">
+<!-- 1WS CDN: JS -->
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/jsc/cl1ws.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/jquery/jquery-3.5.1.modified.min.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/videoPlayer/video-player.min.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/fancybox3/jquery.fancybox.min.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/ElementQueries/element-queries.min.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/slick/slick.modified.min.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/ContentCast/Inline/inline.min.js"></script>
+<script src="https://cdn.cs.1worldsync.com/static/pe/26_5_12_2/26_5_12_2/Content/qtip/jquery.qtip.modified.min.js"></script>
+<script>
+/* Init after all CDN scripts have loaded. HTML rendering is async (fetch),
+   so poll for _1wsHtmlReady before calling init. */
+(function waitAndInit() {
+  if (!window._1wsHtmlReady) { setTimeout(waitAndInit, 50); return; }
+  /* Force qTip factory to run before init (side-effect module —
+     factory installs jQuery.fn.qtip but returns undefined) */
+  try { ccs_require('qtip'); } catch(e) {}
+  init1WS();
+})();
+</script>
 </body>
 </html>
