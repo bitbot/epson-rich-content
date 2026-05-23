@@ -40,8 +40,6 @@
   }
   .ccs-hotspot-expanded-popup[data-pos="left"] .qtip-tip { right: -7px; top: 50%; margin-top: -6px; border-left: 0; border-bottom: 0; }
   .ccs-hotspot-expanded-popup[data-pos="right"] .qtip-tip { left: -7px; top: 50%; margin-top: -6px; border-right: 0; border-top: 0; }
-  .ccs-hotspot-expanded-popup[data-pos="top"] .qtip-tip { bottom: -7px; left: 50%; margin-left: -6px; border-left: 0; border-top: 0; }
-  .ccs-hotspot-expanded-popup[data-pos="bottom"] .qtip-tip { top: -7px; left: 50%; margin-left: -6px; border-right: 0; border-bottom: 0; }
   .ccs-hotspot-expanded-popup .qtip-content { padding: 0 16px; line-height: 1.5; }
   .ccs-hotspot-expanded-popup .qtip-content > div { padding: 16px 0; }
   .ccs-hotspot-expanded-popup .qtip-content > div > * + * { margin-top: 0.7em; }
@@ -184,19 +182,15 @@ function renderHotspotsSection(hotspots, expanded) {
         var activeClass = (m === k) ? ' ccs-hotspots-point-active' : '';
         html += '<div class="ccs-hotspots-point' + activeClass + '" tabindex="0" style="top:calc(' + (ptm.y*100) + '% - 16px);left:calc(' + (ptm.x*100) + '% - 16px)" aria-label="' + ptm.heading.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;') + '"></div>';
       }
-      // Position popup at the point, matching qTip my/at anchoring from de()
-      var pos = pt2.position || 'top';
+      // Popup to the side of the point, vertically centered in the component
+      var popSide = pt2.x < 0.5 ? 'right' : 'left';
       var popStyle;
-      if (pos === 'left') {
-        popStyle = 'top:calc(' + (pt2.y*100) + '% - 16px);left:calc(' + (pt2.x*100) + '% - 16px);transform:translate(-100%,-50%);padding-right:10px';
-      } else if (pos === 'right') {
-        popStyle = 'top:calc(' + (pt2.y*100) + '% - 16px);left:calc(' + (pt2.x*100) + '% + 16px);transform:translateY(-50%);padding-left:10px';
-      } else if (pos === 'bottom') {
-        popStyle = 'top:calc(' + (pt2.y*100) + '% + 16px);left:calc(' + (pt2.x*100) + '% - 16px);transform:translateX(-50%);padding-top:10px';
+      if (popSide === 'left') {
+        popStyle = 'top:50%;right:' + ((1 - pt2.x)*100 + 2) + '%;transform:translateY(-50%);padding-right:10px';
       } else {
-        popStyle = 'top:calc(' + (pt2.y*100) + '% - 16px);left:calc(' + (pt2.x*100) + '% - 16px);transform:translate(-50%,-100%);padding-bottom:10px';
+        popStyle = 'top:50%;left:' + (pt2.x*100 + 2) + '%;transform:translateY(-50%);padding-left:10px';
       }
-      html += '<div class="ccs-hotspot-expanded-popup" data-pos="' + pos + '" style="' + popStyle + '"><div class="qtip-light ccs-hotspots-tooltip"><div class="qtip-tip"></div><div class="qtip-content"><div>';
+      html += '<div class="ccs-hotspot-expanded-popup" data-pos="' + popSide + '" style="' + popStyle + '"><div class="qtip-light ccs-hotspots-tooltip"><div class="qtip-tip"></div><div class="qtip-content"><div>';
       if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
       html += '<h4>' + pt2.heading + '</h4><p>' + pt2.body + '</p></div></div></div></div>';
       html += '</div></div>';
