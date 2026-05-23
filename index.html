@@ -21,33 +21,30 @@
   .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block { margin-top: 4px !important; }
   .preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance { margin-top: 4px !important; }
   .preview-expanded .ccs-cc-fc-custom-controls, .preview-expanded .ccs-cc-fc-arrows { display: none !important; }
-  .preview-expanded .ccs-hotspots-point:not(.ccs-hotspots-point-active) { display: none !important; }
-
-  /* Expanded hotspot point styling (outside 1WS wrapper) */
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point {
-    width: 32px; height: 32px; border-radius: 50%; border: 1px dashed transparent;
-    background-color: #504d56; cursor: pointer; box-sizing: border-box; padding: 0;
-    -webkit-appearance: none; appearance: none;
+  /* Expanded hotspot: use 1WS .ccs-hotspots-default wrapper so CDN CSS handles point styling.
+     Only the current point is visible; others hidden. Popup positioned at the point with connector. */
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point { display: none; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point.ccs-hotspots-point-current { display: block; }
+  .ccs-hotspot-expanded-popup {
+    position: absolute; z-index: 4; pointer-events: none;
   }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:hover { background-color: #83838f; }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after,
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before {
-    content: ""; background-color: #fff; position: absolute; border-radius: 1px;
-    transform: rotate(45deg);
+  .ccs-hotspot-expanded-popup .qtip-light {
+    position: relative; width: 300px; background: #fff; border: 1px solid #e2e2e2;
+    box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.15); color: #454545;
   }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before { width: 2px; height: 16px; top: 7px; left: 14px; }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after { width: 16px; height: 2px; top: 14px; left: 7px; }
-
-  /* Expanded hotspot popup */
-  .ccs-hotspot-expanded-dim { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2; pointer-events: none; }
-  .ccs-hotspot-expanded-popup { position: absolute; z-index: 4; pointer-events: none; }
-  .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip { position: relative; width: 360px; }
-  .ccs-hotspot-expanded-popup .qtip-close { display: none; }
+  /* Connector arrow */
+  .ccs-hotspot-expanded-popup .qtip-tip {
+    position: absolute; width: 12px; height: 12px;
+    background: #fff; border: 1px solid #e2e2e2;
+    transform: rotate(45deg); z-index: 1;
+  }
+  .ccs-hotspot-expanded-popup[data-pos="left"] .qtip-tip { right: -7px; top: 50%; margin-top: -6px; border-left: 0; border-bottom: 0; }
+  .ccs-hotspot-expanded-popup[data-pos="right"] .qtip-tip { left: -7px; top: 50%; margin-top: -6px; border-right: 0; border-top: 0; }
   .ccs-hotspot-expanded-popup .qtip-content { padding: 0 16px; line-height: 1.5; }
   .ccs-hotspot-expanded-popup .qtip-content > div { padding: 16px 0; }
+  .ccs-hotspot-expanded-popup .qtip-content > div > * + * { margin-top: 0.7em; }
   .ccs-hotspot-expanded-popup .qtip-content img { display: block; margin: 0 auto; max-width: 100%; }
   .ccs-hotspot-expanded-popup .qtip-content h4 { text-align: center; font-size: 1.2em; }
-  .ccs-hotspot-expanded-popup .qtip-content p { font-size: 0.95em; line-height: 1.5; color: #444; }
 </style>
 </head>
 <body>
@@ -55,6 +52,14 @@
 
 <script>
 var INLINE_CONTENT_ID = 'inline-content';
+
+// Image transform URL builder — mirrors 1WS CDN pattern (e.g. width(1200).jpg)
+// Uses the /img/ Pages Function for dynamic resizing.
+function imgTransform(path, transforms) {
+  if (!path || path.indexOf("http") === 0) return path;
+  if (path.charAt(0) !== "/") path = "/" + path;
+  return "/img/" + transforms + path;
+}
 
 var PRODUCTS = [
   { slug: 'et-2980u', name: 'ET-2980U' },
@@ -207,68 +212,46 @@ function renderDisclaimerStrip(strip) {
 
 function renderHotspotsSection(hotspots, expanded) {
   var html = '<div data-elementid="inline-content-hotspots[eps]" data-context=\'{"mobile":false}\' class="ccs-cc-inline-section ccs-cc-inline-hotspots" data-display-mode="noheader">';
-
   if (!expanded) {
-    /* Interactive mode: render composite image with data-hotspots attribute for 1WS init */
-    var imgUrl = hotspots.compositeImage;
-    if (imgUrl && imgUrl.indexOf('http') !== 0) imgUrl = '/' + imgUrl;
-
+    var imgUrl = imgTransform(hotspots.compositeImage, 'width(1200)');
     var hsData = [];
     for (var i = 0; i < hotspots.points.length; i++) {
       var pt = hotspots.points[i];
-      var pUrl = pt.popupImage;
-      if (pUrl && pUrl.indexOf('http') !== 0) pUrl = '/' + pUrl;
-      hsData.push({
-        x: pt.x, y: pt.y, type: 'textimage',
-        title: pt.heading.replace(/<[^>]*>/g, ''),
-        description: pt.body,
-        mediaUrl: pUrl, transcodedUrl: '', previewUrl: '',
-        altText: (pt.popupAlt || pt.heading).replace(/<[^>]*>/g, '')
-      });
+      var pUrl = imgTransform(pt.popupImage, 'width(400)');
+      hsData.push({ x: pt.x, y: pt.y, type: 'textimage', title: pt.heading.replace(/<[^>]*>/g, ''), description: pt.body, mediaUrl: pUrl, transcodedUrl: '', previewUrl: '', altText: (pt.popupAlt || pt.heading).replace(/<[^>]*>/g, '') });
     }
-
     html += '<div class="ccs-hotspots-container"><img loading="lazy" src="' + imgUrl + '" alt="' + (hotspots.compositeAlt || '') + '" class="ccs-hotspots-image" data-hotspots=\'' + JSON.stringify(hsData).replace(/'/g, '&#39;') + '\' /></div>';
   } else {
-    /* Expanded mode: each point gets its own composite instance with popup */
     for (var k = 0; k < hotspots.points.length; k++) {
       var pt2 = hotspots.points[k];
-      var cImg = hotspots.compositeImage;
-      if (cImg && cImg.indexOf('http') !== 0) cImg = '/' + cImg;
-      var pImg = pt2.popupImage;
-      if (pImg && pImg.indexOf('http') !== 0) pImg = '/' + pImg;
-
-      var popStyle = getExpandedPopupStyle(pt2.x, pt2.y);
-
+      var cImg = imgTransform(hotspots.compositeImage, 'width(1200)');
+      var pImg = imgTransform(pt2.popupImage, 'width(400)');
+      /* Use .ccs-hotspots.ccs-hotspots-default wrapper so 1WS CSS handles point styling */
       html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">';
-      html += '<div class="ccs-hotspots ccs-hotspots-default" style="position:relative; display:inline-block; width:100%">';
-      html += '<div class="ccs-hotspot-expanded-dim"></div>';
-      html += '<img loading="lazy" src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" class="ccs-hotspots-image" style="display:block; width:100%" />';
-      html += '<div class="ccs-hotspots-point ccs-hotspots-point-active" style="position:absolute; left:' + (pt2.x * 100) + '%; top:' + (pt2.y * 100) + '%; transform:translate(-50%,-50%); pointer-events:none; z-index:3"></div>';
-      html += '<div class="ccs-hotspot-expanded-popup" style="' + popStyle + '">';
-      html += '<div class="qtip qtip-light qtip-shadow ccs-hotspots-tooltip ccs-hotspots-tooltip-medium" style="position:relative; left:auto; top:auto; display:block">';
-      html += '<div class="qtip-content"><div>';
-      if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g, '&quot;') + '" />';
-      html += '<h4>' + pt2.heading + '</h4>';
-      html += '<p>' + pt2.body + '</p>';
-      html += '</div></div></div></div></div></div>';
+      html += '<div class="ccs-hotspots ccs-hotspots-default" style="display:inline-block;position:relative">';
+      html += '<img src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" style="width:100%;display:block" />';
+      /* Render all points but only mark the current one as current */
+      for (var m = 0; m < hotspots.points.length; m++) {
+        var ptm = hotspots.points[m];
+        var activeClass = (m === k) ? ' ccs-hotspots-point-current' : '';
+        html += '<div class="ccs-hotspots-point' + activeClass + '" tabindex="0" style="top:calc(' + (ptm.y*100) + '% - 16px);left:calc(' + (ptm.x*100) + '% - 16px)" aria-label="' + ptm.heading.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;') + '"></div>';
+      }
+      /* Popup to the side of the point, vertically centered on the point */
+      var popSide = pt2.x < 0.5 ? 'right' : 'left';
+      var popStyle;
+      if (popSide === 'left') {
+        popStyle = 'top:' + (pt2.y*100) + '%;right:' + ((1 - pt2.x)*100 + 2) + '%;transform:translateY(-50%);padding-right:10px';
+      } else {
+        popStyle = 'top:' + (pt2.y*100) + '%;left:' + (pt2.x*100 + 2) + '%;transform:translateY(-50%);padding-left:10px';
+      }
+      html += '<div class="ccs-hotspot-expanded-popup" data-pos="' + popSide + '" style="' + popStyle + '"><div class="qtip-light ccs-hotspots-tooltip"><div class="qtip-tip"></div><div class="qtip-content"><div>';
+      if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
+      html += '<h4>' + pt2.heading + '</h4><p>' + pt2.body + '</p></div></div></div></div>';
+      html += '</div></div>';
     }
   }
-
   html += '</div>';
   return html;
-}
-
-function getExpandedPopupStyle(mx, my) {
-  var popupW = 0.30;
-  var hGap = 0.02;
-  var left;
-  if (mx < 0.5) {
-    left = mx + hGap;
-  } else {
-    left = mx - hGap - popupW;
-  }
-  left = Math.max(0.02, Math.min(left, 1 - 0.02 - popupW));
-  return 'left:' + (left * 100).toFixed(1) + '%; top:50%; transform:translateY(-50%)';
 }
 
 function renderDisclaimersSection(content) {
