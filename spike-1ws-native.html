@@ -22,6 +22,21 @@
   .preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance { margin-top: 4px !important; }
   .preview-expanded .ccs-cc-fc-custom-controls, .preview-expanded .ccs-cc-fc-arrows { display: none !important; }
   .preview-expanded .ccs-hotspots-point:not(.ccs-hotspots-point-active) { display: none !important; }
+  /* Expanded hotspot points: replicate .ccs-hotspots-default .ccs-hotspots-point-active styling
+     since expanded mode renders points outside the .ccs-hotspots-default wrapper that le() creates */
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point {
+    width: 32px; height: 32px; border-radius: 50%; border: 1px dashed transparent;
+    background-color: #504d56; cursor: pointer; box-sizing: border-box; padding: 0;
+    -webkit-appearance: none; appearance: none;
+  }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:hover { background-color: #83838f; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after,
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before {
+    content: ""; background-color: #fff; position: absolute; border-radius: 1px;
+    transform: rotate(45deg);
+  }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before { width: 2px; height: 16px; top: 7px; left: 14px; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after { width: 16px; height: 2px; top: 14px; left: 7px; }
   .ccs-hotspot-expanded-dim { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2; pointer-events: none; }
   .ccs-hotspot-expanded-popup { position: absolute; z-index: 4; pointer-events: none; }
   .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip { position: relative; width: 360px; background: #fff; border-radius: 4px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); max-width: 450px; }
