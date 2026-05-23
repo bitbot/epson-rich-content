@@ -14,7 +14,9 @@
     -webkit-font-smoothing: antialiased;
   }
   body { display: block !important; flex-direction: unset !important; }
-  #app { max-width: 1200px; margin: 0 auto; }
+  /* Simulates a retailer iframe container. Staples uses ~1400px.
+     1WS CSS handles inner containment (ccs-hotspots at 1200px, etc). */
+  #app { max-width: 1400px; margin: 0 auto; }
   .preview-expanded .ccs-cc-inline-section + .ccs-cc-inline-section { margin-top: 40px !important; }
   .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block { margin-top: 4px !important; }
   .preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance { margin-top: 4px !important; }
