@@ -22,17 +22,31 @@
   .preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance { margin-top: 4px !important; }
   .preview-expanded .ccs-cc-fc-custom-controls, .preview-expanded .ccs-cc-fc-arrows { display: none !important; }
   /* Expanded hotspot: use 1WS .ccs-hotspots-default wrapper so CDN CSS handles point styling.
-     Only the active point is visible; others hidden. Popup card floats beside the point. */
+     Only the active point is visible; others hidden. Popup positioned at the point with connector. */
   .ccs-hotspots-expanded-instance .ccs-hotspots-point { display: none; }
   .ccs-hotspots-expanded-instance .ccs-hotspots-point.ccs-hotspots-point-active { display: block; }
-  .ccs-hotspot-expanded-popup { position: absolute; z-index: 4; pointer-events: none; }
-  .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip { position: relative; width: 360px; background: #fff; border-radius: 4px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); max-width: 450px; }
-  .ccs-hotspot-expanded-popup .qtip-close { display: none; }
+  .ccs-hotspot-expanded-popup {
+    position: absolute; z-index: 4; pointer-events: none;
+  }
+  .ccs-hotspot-expanded-popup .qtip-light {
+    position: relative; width: 300px; background: #fff; border: 1px solid #e2e2e2;
+    box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.15); color: #454545;
+  }
+  /* Connector arrow */
+  .ccs-hotspot-expanded-popup .qtip-tip {
+    position: absolute; width: 12px; height: 12px;
+    background: #fff; border: 1px solid #e2e2e2;
+    transform: rotate(45deg); z-index: -1;
+  }
+  .ccs-hotspot-expanded-popup[data-pos="left"] .qtip-tip { right: -7px; top: 50%; margin-top: -6px; border-left: 0; border-bottom: 0; }
+  .ccs-hotspot-expanded-popup[data-pos="right"] .qtip-tip { left: -7px; top: 50%; margin-top: -6px; border-right: 0; border-top: 0; }
+  .ccs-hotspot-expanded-popup[data-pos="top"] .qtip-tip { bottom: -7px; left: 50%; margin-left: -6px; border-left: 0; border-top: 0; }
+  .ccs-hotspot-expanded-popup[data-pos="bottom"] .qtip-tip { top: -7px; left: 50%; margin-left: -6px; border-right: 0; border-bottom: 0; }
   .ccs-hotspot-expanded-popup .qtip-content { padding: 0 16px; line-height: 1.5; }
   .ccs-hotspot-expanded-popup .qtip-content > div { padding: 16px 0; }
+  .ccs-hotspot-expanded-popup .qtip-content > div > * + * { margin-top: 0.7em; }
   .ccs-hotspot-expanded-popup .qtip-content img { display: block; margin: 0 auto; max-width: 100%; }
   .ccs-hotspot-expanded-popup .qtip-content h4 { text-align: center; font-size: 1.2em; }
-  .ccs-hotspot-expanded-popup .qtip-content p { font-size: 0.95em; line-height: 1.5; color: #444; }
 </style>
 </head>
 <body>
@@ -170,9 +184,19 @@ function renderHotspotsSection(hotspots, expanded) {
         var activeClass = (m === k) ? ' ccs-hotspots-point-active' : '';
         html += '<div class="ccs-hotspots-point' + activeClass + '" tabindex="0" style="top:calc(' + (ptm.y*100) + '% - 16px);left:calc(' + (ptm.x*100) + '% - 16px)" aria-label="' + ptm.heading.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;') + '"></div>';
       }
-      // Popup card positioned beside the active point
-      var popStyle = pt2.x < 0.5 ? 'left:' + (pt2.x*100 + 3) + '%;top:50%;transform:translateY(-50%)' : 'right:' + ((1 - pt2.x)*100 + 3) + '%;top:50%;transform:translateY(-50%)';
-      html += '<div class="ccs-hotspot-expanded-popup" style="' + popStyle + '"><div class="ccs-hotspots-tooltip"><div class="qtip-content"><div>';
+      // Position popup at the point, matching qTip my/at anchoring from de()
+      var pos = pt2.position || 'top';
+      var popStyle;
+      if (pos === 'left') {
+        popStyle = 'top:calc(' + (pt2.y*100) + '% - 16px);left:calc(' + (pt2.x*100) + '% - 16px);transform:translate(-100%,-50%);padding-right:10px';
+      } else if (pos === 'right') {
+        popStyle = 'top:calc(' + (pt2.y*100) + '% - 16px);left:calc(' + (pt2.x*100) + '% + 16px);transform:translateY(-50%);padding-left:10px';
+      } else if (pos === 'bottom') {
+        popStyle = 'top:calc(' + (pt2.y*100) + '% + 16px);left:calc(' + (pt2.x*100) + '% - 16px);transform:translateX(-50%);padding-top:10px';
+      } else {
+        popStyle = 'top:calc(' + (pt2.y*100) + '% - 16px);left:calc(' + (pt2.x*100) + '% - 16px);transform:translate(-50%,-100%);padding-bottom:10px';
+      }
+      html += '<div class="ccs-hotspot-expanded-popup" data-pos="' + pos + '" style="' + popStyle + '"><div class="qtip-light ccs-hotspots-tooltip"><div class="qtip-tip"></div><div class="qtip-content"><div>';
       if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
       html += '<h4>' + pt2.heading + '</h4><p>' + pt2.body + '</p></div></div></div></div>';
       html += '</div></div>';
