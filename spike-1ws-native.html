@@ -24,7 +24,7 @@
   /* Expanded hotspot: use 1WS .ccs-hotspots-default wrapper so CDN CSS handles point styling.
      Only the active point is visible; others hidden. Popup positioned at the point with connector. */
   .ccs-hotspots-expanded-instance .ccs-hotspots-point { display: none; }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point.ccs-hotspots-point-active { display: block; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point.ccs-hotspots-point-current { display: block; }
   .ccs-hotspot-expanded-popup {
     position: absolute; z-index: 4; pointer-events: none;
   }
@@ -179,16 +179,16 @@ function renderHotspotsSection(hotspots, expanded) {
       // Render all points but only mark the current one active
       for (var m = 0; m < hotspots.points.length; m++) {
         var ptm = hotspots.points[m];
-        var activeClass = (m === k) ? ' ccs-hotspots-point-active' : '';
+        var activeClass = (m === k) ? ' ccs-hotspots-point-current' : '';
         html += '<div class="ccs-hotspots-point' + activeClass + '" tabindex="0" style="top:calc(' + (ptm.y*100) + '% - 16px);left:calc(' + (ptm.x*100) + '% - 16px)" aria-label="' + ptm.heading.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;') + '"></div>';
       }
-      // Popup to the side of the point, vertically centered in the component
+      // Popup to the side of the point, vertically centered on the point
       var popSide = pt2.x < 0.5 ? 'right' : 'left';
       var popStyle;
       if (popSide === 'left') {
-        popStyle = 'top:50%;right:' + ((1 - pt2.x)*100 + 2) + '%;transform:translateY(-50%);padding-right:10px';
+        popStyle = 'top:' + (pt2.y*100) + '%;right:' + ((1 - pt2.x)*100 + 2) + '%;transform:translateY(-50%);padding-right:10px';
       } else {
-        popStyle = 'top:50%;left:' + (pt2.x*100 + 2) + '%;transform:translateY(-50%);padding-left:10px';
+        popStyle = 'top:' + (pt2.y*100) + '%;left:' + (pt2.x*100 + 2) + '%;transform:translateY(-50%);padding-left:10px';
       }
       html += '<div class="ccs-hotspot-expanded-popup" data-pos="' + popSide + '" style="' + popStyle + '"><div class="qtip-light ccs-hotspots-tooltip"><div class="qtip-tip"></div><div class="qtip-content"><div>';
       if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
