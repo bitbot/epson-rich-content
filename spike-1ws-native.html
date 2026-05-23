@@ -21,23 +21,10 @@
   .preview-expanded .ccs-cc-inline-section.ccs-cc-inline-features .ccs-cc-inline-features-block + .ccs-cc-inline-features-block { margin-top: 4px !important; }
   .preview-expanded .ccs-hotspots-expanded-instance + .ccs-hotspots-expanded-instance { margin-top: 4px !important; }
   .preview-expanded .ccs-cc-fc-custom-controls, .preview-expanded .ccs-cc-fc-arrows { display: none !important; }
-  .preview-expanded .ccs-hotspots-point:not(.ccs-hotspots-point-active) { display: none !important; }
-  /* Expanded hotspot points: replicate .ccs-hotspots-default .ccs-hotspots-point-active styling
-     since expanded mode renders points outside the .ccs-hotspots-default wrapper that le() creates */
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point {
-    width: 32px; height: 32px; border-radius: 50%; border: 1px dashed transparent;
-    background-color: #504d56; cursor: pointer; box-sizing: border-box; padding: 0;
-    -webkit-appearance: none; appearance: none;
-  }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:hover { background-color: #83838f; }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after,
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before {
-    content: ""; background-color: #fff; position: absolute; border-radius: 1px;
-    transform: rotate(45deg);
-  }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:before { width: 2px; height: 16px; top: 7px; left: 14px; }
-  .ccs-hotspots-expanded-instance .ccs-hotspots-point:after { width: 16px; height: 2px; top: 14px; left: 7px; }
-  .ccs-hotspot-expanded-dim { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2; pointer-events: none; }
+  /* Expanded hotspot: use 1WS .ccs-hotspots-default wrapper so CDN CSS handles point styling.
+     Only the active point is visible; others hidden. Popup card floats beside the point. */
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point { display: none; }
+  .ccs-hotspots-expanded-instance .ccs-hotspots-point.ccs-hotspots-point-active { display: block; }
   .ccs-hotspot-expanded-popup { position: absolute; z-index: 4; pointer-events: none; }
   .ccs-hotspot-expanded-popup .ccs-hotspots-tooltip { position: relative; width: 360px; background: #fff; border-radius: 4px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); max-width: 450px; }
   .ccs-hotspot-expanded-popup .qtip-close { display: none; }
@@ -173,10 +160,22 @@ function renderHotspotsSection(hotspots, expanded) {
       var pt2 = hotspots.points[k];
       var cImg = imgTransform(hotspots.compositeImage, 'width(1200)');
       var pImg = imgTransform(pt2.popupImage, 'width(400)');
+      // Use .ccs-hotspots.ccs-hotspots-default wrapper so 1WS CSS handles point styling
+      html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance">';
+      html += '<div class="ccs-hotspots ccs-hotspots-default" style="display:inline-block;position:relative">';
+      html += '<img src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" style="width:100%;display:block" />';
+      // Render all points but only mark the current one active
+      for (var m = 0; m < hotspots.points.length; m++) {
+        var ptm = hotspots.points[m];
+        var activeClass = (m === k) ? ' ccs-hotspots-point-active' : '';
+        html += '<div class="ccs-hotspots-point' + activeClass + '" tabindex="0" style="top:calc(' + (ptm.y*100) + '% - 16px);left:calc(' + (ptm.x*100) + '% - 16px)" aria-label="' + ptm.heading.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;') + '"></div>';
+      }
+      // Popup card positioned beside the active point
       var popStyle = pt2.x < 0.5 ? 'left:' + (pt2.x*100 + 3) + '%;top:50%;transform:translateY(-50%)' : 'right:' + ((1 - pt2.x)*100 + 3) + '%;top:50%;transform:translateY(-50%)';
-      html += '<div class="ccs-hotspots-container ccs-hotspots-expanded-instance"><div style="position:relative;display:inline-block;width:100%"><img src="' + cImg + '" alt="' + (hotspots.compositeAlt || '') + '" style="width:100%;display:block" /><div class="ccs-hotspot-expanded-dim"></div><button class="ccs-hotspots-point ccs-hotspots-point-active" type="button" style="position:absolute;left:' + (pt2.x*100) + '%;top:' + (pt2.y*100) + '%;transform:translate(-50%,-50%);z-index:3" aria-label="' + pt2.heading.replace(/"/g, '&quot;') + '"></button><div class="ccs-hotspot-expanded-popup" style="' + popStyle + '"><div class="ccs-hotspots-tooltip"><div class="qtip-content"><div>';
+      html += '<div class="ccs-hotspot-expanded-popup" style="' + popStyle + '"><div class="ccs-hotspots-tooltip"><div class="qtip-content"><div>';
       if (pImg) html += '<img src="' + pImg + '" alt="' + (pt2.popupAlt || pt2.heading).replace(/"/g,'&quot;') + '" />';
-      html += '<h4>' + pt2.heading + '</h4><p>' + pt2.body + '</p></div></div></div></div></div></div>';
+      html += '<h4>' + pt2.heading + '</h4><p>' + pt2.body + '</p></div></div></div></div>';
+      html += '</div></div>';
     }
   }
   html += '</div>';
