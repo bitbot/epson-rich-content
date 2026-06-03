@@ -16,7 +16,7 @@
   "disclaimerStrip": {
     "bgColor": "#011133",
     "fgColor": "#ffffff",
-    "content": "*Unlimited Ink Replenishment. Use the Epson Genuine Ink supplied with your ReadyPrint subscription. Subject to the ReadyPrint Terms of Use and the functional limitations for the printer hardware (ET-2980U 2,000 pages/month, ET-3850U 2,100 pages/month, ET-5850U 8,300 pages/month, ET-16650U 8,300 pages/month). See epson.com/readyprint-terms. All Unlimited Printing Plans require a 2-year commitment and printers must remain connected to the Internet. Available in the Contiguous US only."
+    "content": "*Unlimited Ink Replenishment. Use the Epson Genuine Ink supplied with your ReadyPrint subscription. Subject to the ReadyPrint Terms of Use and the functional limitations for the printer hardware (ET-2980U 2,000 pages/month, ET-3950U 2,100 pages/month, ET-5850U 8,300 pages/month, ET-16650U 8,300 pages/month). See epson.com/readyprint-terms. All Unlimited Printing Plans require a 2-year commitment and printers must remain connected to the Internet. Available in the Contiguous US only."
   },
   "carousels": [
     {
@@ -112,7 +112,7 @@
         {
           "navLabel": "The Supertank Leader",
           "heading": "The World's #1 Selling Supertank Printer",
-          "body": "With over 100 million sold worldwide<sup>3</sup>.",
+          "body": "With over 100 million sold worldwide<sup>2</sup>.",
           "image": "assets/products/et-5850u/pf-5-supertankleader.jpg",
           "alt": "The Supertank Leader",
           "ratio": 2.39925,
@@ -139,7 +139,7 @@
         "x": 0.8,
         "y": 0.4,
         "heading": "Wireless Mobile Printing",
-        "body": "Wirelessly print and scan from your PC or smart device<sup>4</sup>. Enjoy enhanced mobile printing from the Epson Smart Panel<sup>\u00ae</sup> App<sup>5</sup>.",
+        "body": "Wirelessly print and scan from your PC or smart device<sup>3</sup>. Enjoy enhanced mobile printing from the Epson Smart Panel<sup>\u00ae</sup> App<sup>4</sup>.",
         "popupImage": "assets/products/et-5850u/hotspot-popup-2.jpg",
         "popupAlt": "Wireless Mobile Printing",
         "position": "left"
@@ -182,5 +182,5 @@
       }
     ]
   },
-  "disclaimers": "<h3>Disclaimers</h3><span style=\"font-size:0.8333333333333334em;\"><b>1</b> Individual cartridges estimate based on print yields of an included or replacement set of black and color ink bottles as compared to Epson standard-capacity ink cartridges for similarly featured printers as of March 2024. | <b>2</b> Based on average monthly document print volumes of about 125 pages. | <b>3</b> Worldwide 2011 \u2013 10/2024. | <b>4</b> Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect\u2122 enabled printers and compatible devices and apps, visit www.epson.com/connect | <b>5</b> Requires Epson Smart Panel app download. Data usage fees may apply.</span>"
+  "disclaimers": "<h3>Disclaimers</h3><span style=\"font-size:0.8333333333333334em;\"><b>1</b> Individual cartridges estimate based on print yields of an included or replacement set of black and color ink bottles as compared to Epson standard-capacity ink cartridges for similarly featured printers as of March 2024. | <b>2</b> Worldwide 2011 \u2013 10/2024. | <b>3</b> Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect\u2122 enabled printers and compatible devices and apps, visit www.epson.com/connect | <b>4</b> Requires Epson Smart Panel app download. Data usage fees may apply.</span>"
 }
