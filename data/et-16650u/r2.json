@@ -1,0 +1,186 @@
+{
+  "product": {
+    "sku": "ET-16650U",
+    "name": "Epson EcoTank Pro ET-16650U",
+    "fullName": "Epson EcoTank® Pro ET-16650U Wide-Format Wireless All-in-One Supertank Printer",
+    "segment": "Office",
+    "readyPrintPrice": ""
+  },
+  "hero": {
+    "image": "assets/products/et-16650u-r2/hero.jpg",
+    "alt": "Epson EcoTank Pro ET-16650U — Print Without Limits",
+    "ratio": 2.39925,
+    "paddingTop": "41.680%",
+    "bgPosition": "center"
+  },
+  "disclaimerStrip": {
+    "bgColor": "#011133",
+    "fgColor": "#ffffff",
+    "content": "*Unlimited Ink Replenishment. Use the Epson Genuine Ink supplied with your ReadyPrint subscription. Subject to the ReadyPrint Terms of Use and the functional limitations for the printer hardware (ET-2980U 2,000 pages/month, ET-3950U 2,100 pages/month, ET-5850U 8,300 pages/month, ET-16650U 8,300 pages/month). See epson.com/readyprint-terms. All Unlimited Printing Plans require a 2-year commitment and printers must remain connected to the Internet. Available in the Contiguous US only."
+  },
+  "carousels": [
+    {
+      "id": "readyprint",
+      "label": "ReadyPrint Benefits",
+      "slides": [
+        {
+          "navLabel": "Simple Print Plan",
+          "heading": "Simple 24-Month Print Plan",
+          "body": "One predictable monthly payment covers your printer, ink, and support",
+          "image": "assets/products/et-16650u-r2/rp-1-printplan.jpg",
+          "alt": "Simple 24-Month Print Plan",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Unlimited Color Printing",
+          "heading": "Unlimited Color Printing",
+          "body": "No monthly page limits, no overage fees, and no surprises",
+          "image": "assets/products/et-16650u-r2/rp-2-unlimitedcolor.jpg",
+          "alt": "Unlimited Color Printing",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Auto Ink Delivery",
+          "heading": "Auto Ink Delivery",
+          "body": "Never run out of ink again. New ink delivered before you need it. Skip the hassle of reordering ink",
+          "image": "assets/products/et-16650u-r2/rp-3-autoink.jpg",
+          "alt": "Auto Ink Delivery",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Premium Support",
+          "heading": "Premium Support Included",
+          "body": "Continuous printer coverage with dedicated support specialists – including free full-unit-exchange",
+          "image": "assets/products/et-16650u-r2/rp-4-premiumsupport.jpg",
+          "alt": "Premium Support Included",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "label": "EcoTank Product Features",
+      "slides": [
+        {
+          "navLabel": "Affordable Color Printing",
+          "heading": "Affordable 13\" x 19\" Color Printing",
+          "body": "Each included set of Epson EcoFit<sup>®</sup> ink bottles is equivalent to about 80 ink cartridges<sup>1</sup>",
+          "image": "assets/products/et-16650u-r2/pf-1-affordablecolor.jpg",
+          "alt": "Affordable 13\" x 19\" Color Printing",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Print Quality",
+          "heading": "Unique Epson PrecisionCore<sup>®</sup> Print Technology",
+          "body": "High 4,800 x 1,200 print resolution for sharp text & true photographic print quality",
+          "image": "assets/products/et-16650u-r2/pf-2-precisioncore.jpg",
+          "alt": "Unique Epson PrecisionCore® Print Technology",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Reliable Design",
+          "heading": "Our Most Reliable EcoTank Ever",
+          "body": "Unique permanent printhead with pro-grade engineering delivers improved everyday reliability",
+          "image": "assets/products/et-16650u-r2/pf-3-reliabledesign.jpg",
+          "alt": "Our Most Reliable EcoTank Ever",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Modern Connectivity",
+          "heading": "Modern Connectivity",
+          "body": "Print directly from your computer or mobile device",
+          "image": "assets/products/et-16650u-r2/pf-4-modernconnectivity.jpg",
+          "alt": "Modern Connectivity",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Supertank Leader",
+          "heading": "The World's #1 Selling Supertank Printer",
+          "body": "With over 100 million sold worldwide<sup>2</sup>",
+          "image": "assets/products/et-16650u-r2/pf-5-supertankleader.jpg",
+          "alt": "The World's #1 Selling Supertank Printer",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        }
+      ]
+    }
+  ],
+  "hotspots": {
+    "compositeImage": "assets/products/et-16650u-r2/hotspot-composite.jpg",
+    "compositeAlt": "EcoTank Pro ET-16650U — product views",
+    "points": [
+      {
+        "x": 0.065,
+        "y": 0.55,
+        "heading": "Uniquely Keyed EcoFit<sup>®</sup> Ink Bottles",
+        "body": "Makes refilling ink simple. No mess, no stress and no ink bottle mix-ups",
+        "popupImage": "assets/products/et-16650u-r2/hotspot-popup-1.jpg",
+        "popupAlt": "Uniquely Keyed EcoFit® Ink Bottles",
+        "position": "right"
+      },
+      {
+        "x": 0.8,
+        "y": 0.4,
+        "heading": "Wireless Mobile Printing",
+        "body": "Wirelessly print and scan from your PC or smart device<sup>3</sup>. Enjoy enhanced mobile printing from the Epson Smart Panel<sup>®</sup> App<sup>4</sup>",
+        "popupImage": "assets/products/et-16650u-r2/hotspot-popup-2.jpg",
+        "popupAlt": "Wireless Mobile Printing",
+        "position": "left"
+      },
+      {
+        "x": 0.19,
+        "y": 0.42,
+        "heading": "4.3\" Color Touchscreen Display",
+        "body": "Designed for simple navigation and printer management",
+        "popupImage": "assets/products/et-16650u-r2/hotspot-popup-3.jpg",
+        "popupAlt": "4.3\" Color Touchscreen Display",
+        "position": "right"
+      },
+      {
+        "x": 0.78,
+        "y": 0.2,
+        "heading": "Built-In Color Scanner & Copier",
+        "body": "Built-in high-resolution flatbed color scanner, including a robust Auto Document Feeder for easy multiple-document scanning",
+        "popupImage": "assets/products/et-16650u-r2/hotspot-popup-4.jpg",
+        "popupAlt": "Built-In Color Scanner & Copier",
+        "position": "bottom"
+      },
+      {
+        "x": 0.22,
+        "y": 0.6,
+        "heading": "Stunning Print Quality",
+        "body": "Powered by Epson PrecisionCore<sup>®</sup> print technology, EcoTank<sup>®</sup> produces incredible photographic print quality from a recognized leader in photographic printing",
+        "popupImage": "assets/products/et-16650u-r2/hotspot-popup-5.jpg",
+        "popupAlt": "Stunning Print Quality",
+        "position": "top"
+      },
+      {
+        "x": 0.82,
+        "y": 0.8,
+        "heading": "Robust Paper Handling",
+        "body": "Dual High-Capacity 500-sheet paper input trays with auto 2-sided printing supporting paper sizes up to 13\" x 19\"",
+        "popupImage": "assets/products/et-16650u-r2/hotspot-popup-6.jpg",
+        "popupAlt": "Robust Paper Handling",
+        "position": "top"
+      }
+    ]
+  },
+  "disclaimers": "<h3>Disclaimers</h3><span style=\"font-size:0.8333333333333334em;\"><b>1</b> Individual cartridges estimate based on print yields of an included or replacement set of black and color ink bottles as compared to Epson standard-capacity ink cartridges for similarly featured printers as of March 2025. | <b>2</b> Worldwide 2011 – 10/2024. | <b>3</b> Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect™ enabled printers and compatible devices and apps, visit www.epson.com/connect | <b>4</b> Requires Epson Smart Panel app download. Data usage fees may apply.</span>"
+}
