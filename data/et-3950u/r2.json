@@ -44,11 +44,11 @@
           "bgPosition": "center"
         },
         {
-          "navLabel": "Auto Ink Delivery",
-          "heading": "Auto Ink Delivery",
+          "navLabel": "Automatic Ink Delivery",
+          "heading": "Automatic Ink Delivery",
           "body": "Never run out of ink again. New ink delivered before you need it. Skip the hassle of reordering ink",
           "image": "assets/products/et-3950u-r2/rp-3-autoink.jpg",
-          "alt": "Auto Ink Delivery",
+          "alt": "Automatic Ink Delivery",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
           "bgPosition": "center"
