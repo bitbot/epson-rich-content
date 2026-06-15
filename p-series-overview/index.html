@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P-Series Comparison Tool — Overview Page Mockup v3</title>
+<style>
+  /* ================================================================
+     P-SERIES OVERVIEW PAGE — v3
+     Matches the established P-Series Comparison Tool design language.
+     8.5 × 11 in sheet format for PDF export compatibility.
+
+     Template is reusable: swap content block text, overline, title,
+     and accent color for T-Series or other product lines.
+
+     v3 changes:
+     - Typography remapped to standardized MuiTheme type scale
+     - Added registered trademarks (®) and WIR disclaimers
+     - Strengthened PrecisionCore block positioning language
+     - Removed design mockup overlay
+     ================================================================ */
+
+  /* --- Font Faces (P-Series / T-Series shared fonts) --- */
+  @font-face {
+    font-family: "Helvetica Neue LT W05_47 Lt Cn";
+    src: url("fonts/083e1179-98b4-4cbd-a13a-50a7c78d6fea.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Helvetica Neue LT W05_57 Cond";
+    src: url("fonts/9516ef74-4fe9-45fe-a09f-493cb9518f71.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Helvetica Neue LT W05_77 Bd Cn";
+    src: url("fonts/02980b3d-1e37-4378-a5c6-4cf0d6ce0ba5.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Trade Gothic LT W01 Bold";
+    src: url("fonts/f9be987b-0ea1-4c6e-9302-b14707c2a1a2.woff2") format("woff2");
+  }
+
+  /* --- Design Tokens --- */
+  :root {
+    /* Typography */
+    --font-body: "Helvetica Neue LT W05_47 Lt Cn", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-body-medium: "Helvetica Neue LT W05_57 Cond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-heading: "Helvetica Neue LT W05_77 Bd Cn", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-display: "Trade Gothic LT W01 Bold", "Trade Gothic", Impact, sans-serif;
+
+    /* Colors — P-Series palette */
+    --navy: #122448;
+    --navy-light: #1E4493;
+    --cyan: #4BB7D3;
+    --biscay: #2e3853;
+    --gray-blue: #86939A;
+    --gray-blue-dark: #2F373B;
+    --gray-light: #EDEDED;
+    --gray-divider: #CBCBCB;
+    --white: #FFFFFF;
+    --black: #000000;
+
+    /* Page geometry */
+    --page-width: 8.5in;
+    --page-height: 11in;
+    --page-padding-x: 0.5in;
+    --page-padding-top: 0.5in;
+  }
+
+  /* --- Reset & Page Shell --- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e0e0e0;
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    color: var(--navy);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    width: var(--page-width);
+    height: var(--page-height);
+    margin: 24px auto;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    page-break-after: always;
+  }
+
+  /* --- Header Zone --- */
+  .header {
+    padding: var(--page-padding-top) var(--page-padding-x) 0;
+  }
+
+  .accent-strip {
+    width: 80px;
+    height: 6px;
+    background: var(--navy-light);
+    margin-bottom: 14px;
+  }
+
+  /* MUI overline: Trade Gothic Bold, 18px, uppercase, 0.14em tracking, 0.96 lh */
+  .overline {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-blue);
+    line-height: 0.96;
+    margin-bottom: 8px;
+  }
+  .overline sup {
+    font-size: 11px;
+    vertical-align: super;
+  }
+
+  /* MUI h2: Trade Gothic Bold, 56px, 0.96 lh — canonical page title */
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 56px;
+    line-height: 0.96;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  /* MUI subtitle1: Helvetica Neue Lt Cn, 16px, 1.16 lh, 0.05em tracking */
+  .page-subtitle {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.16;
+    letter-spacing: 0.05em;
+    color: var(--gray-blue-dark);
+    max-width: 5.5in;
+  }
+
+  /* --- Top Button (matches TopButton.js) --- */
+  .top-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .top-button__export {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--navy);
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .top-button__divider {
+    width: 1px;
+    height: 14px;
+    background: var(--gray-divider);
+    align-self: center;
+  }
+  .top-button__link {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--navy);
+  }
+  .top-button__link svg {
+    width: 12px;
+    height: 8px;
+    position: relative;
+    top: -1px;
+  }
+  .top-button__label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header-rule {
+    border: none;
+    border-bottom: 1px solid var(--gray-divider);
+    margin: 20px var(--page-padding-x) 0;
+  }
+
+  /* --- Stat Callout Row --- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0 var(--page-padding-x);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--gray-divider);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  /* Stat number — bumped from 28px (h3) to 32px to maintain proportion
+     with enlarged unit labels and captions */
+  .stat__number {
+    font-family: var(--font-display);
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  /* Stat unit label — bumped from 12px (caption) to 14px (table.regular)
+     for clear separation from 11px captions */
+  .stat__unit {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+
+  /* Stat caption — bumped from 9px (MUI body2) to 11px for legibility */
+  .stat__caption {
+    font-family: var(--font-body);
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    color: var(--gray-blue-dark);
+    margin-top: 4px;
+  }
+
+  /* --- Content Area --- */
+  .content {
+    padding: 20px var(--page-padding-x) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* --- Content Block (connected label + body) --- */
+  .content-block {
+    display: grid;
+    grid-template-columns: 1.8in 1fr;
+    gap: 0;
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  /* MUI h6: Helvetica Neue Bd Cn, 16px, 1.2 lh — section label */
+  .content-block__label {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    color: var(--navy);
+    padding: 8px 16px 8px 0;
+    border-right: 3px solid var(--cyan);
+    display: flex;
+    align-items: center;
+  }
+
+  /* Alternate border color — Tim Horton feedback #4: visual cue between topics */
+  .content-block--alt .content-block__label {
+    border-right-color: var(--navy-light);
+  }
+
+  /* Body copy — bumped from 12px (MUI body1) to 14px for legibility on
+     this paragraph-heavy page. Tim Horton feedback #2. */
+  .content-block__body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    color: var(--black);
+    padding: 8px 0 8px 20px;
+  }
+
+  .content-block__body strong {
+    font-family: var(--font-heading);
+    font-weight: normal;
+  }
+
+  .content-block__body .highlight {
+    font-family: var(--font-body-medium);
+    color: var(--navy);
+  }
+
+  /* Inline disclaimer superscripts — matches DisclaimerProcessor <sup> output */
+  .stat__number sup,
+  .stat__unit sup,
+  .content-block__body sup {
+    font-size: 0.65em;
+    vertical-align: super;
+    line-height: 0;
+  }
+
+  /* --- Footer (matches comparison tool footer) --- */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--biscay);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer__disclaimers {
+    flex: 1;
+    padding-left: 8px;
+    padding-right: 16px;
+    /* Single Typography block — matches Footer.js .typographyText */
+    font-family: var(--font-body);
+    font-size: 8px;
+    line-height: 1.2;
+    color: #CBCBCB;
+  }
+
+  /* Trademark line — paragraph 1 (overridden, no number) */
+  .footer__trademarks {
+    margin-bottom: 4px;
+  }
+
+  /* Numbered disclaimers — paragraph 2 (auto-numbered) */
+  /* Matches Footer.js: small > .symbol (bold) + .disclaimer-text (light, pipe-separated) */
+  .footer__numbered {
+  }
+
+  .footer__numbered .symbol {
+    font-family: var(--font-heading);
+    padding-left: 3px;
+  }
+
+  .footer__numbered small:first-child .symbol {
+    padding-left: 0;
+  }
+
+  .footer__numbered .disclaimer-text {
+    font-family: var(--font-body);
+  }
+
+  .footer__numbered .disclaimer-text::before {
+    font-family: var(--font-body);
+    content: "|";
+    padding-right: 2px;
+    padding-left: 2px;
+  }
+
+  .footer__numbered small:first-child .disclaimer-text::before {
+    content: none;
+  }
+
+  .footer__logo {
+    width: 100px;
+    height: auto;
+  }
+
+  .footer__logo svg {
+    width: 100px;
+    height: auto;
+    display: block;
+  }
+
+  /* --- Print --- */
+  @media print {
+    body { background: none; }
+    .sheet { margin: 0; box-shadow: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1: "WHY EPSON P-SERIES" OVERVIEW
+     This is the new intro/summary page that precedes the
+     existing Home Page in the comparison tool flow.
+     ============================================================ -->
+<div class="sheet">
+  <!-- TOP BUTTON — matches TopButton.js (absolute top-right, chevron + "TOP") -->
+  <div class="top-button">
+    <span class="top-button__export">EXPORT</span>
+    <div class="top-button__divider"></div>
+    <a class="top-button__link" href="#first-page">
+      <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.01845 4.80582L2.97232 2.70388L1.0018 4.72815L0 3.69903L2.97232 0.64563L6.02025 3.7767L5.01845 4.80582Z" fill="currentColor"/></svg>
+      <span class="top-button__label">TOP</span>
+    </a>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="accent-strip"></div>
+    <div class="overline">SureColor<sup>®</sup> P-Series</div>
+    <h1 class="page-title">Why Epson</h1>
+    <p class="page-subtitle">
+      The technology behind the prints that professionals trust with their reputations.
+    </p>
+  </div>
+  <hr class="header-rule">
+
+  <!-- STAT CALLOUTS — all verified quantitative data -->
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat__number">10</div>
+      <div class="stat__unit">Ink Colors</div>
+      <div class="stat__caption">UltraChrome® PRO10<br>with Violet for extended gamut</div>
+    </div>
+    <div class="stat">
+      <div class="stat__number">1.5</div>
+      <div class="stat__unit">Picoliters</div>
+      <div class="stat__caption">Minimum droplet size<br>via MicroPiezo® printhead</div>
+    </div>
+    <div class="stat">
+      <div class="stat__number">200+</div>
+      <div class="stat__unit">Years Permanence<sup>1</sup></div>
+      <div class="stat__caption">Color print display life<br>per Wilhelm Research</div>
+    </div>
+  </div>
+
+  <!-- CONTENT BLOCKS -->
+  <div class="content">
+
+    <!-- Block 1: Professional Trust -->
+    <div class="content-block">
+      <div class="content-block__label">
+        Trusted With<br>Reputations
+      </div>
+      <div class="content-block__body">
+        Professional photographers choose Epson for one reason: <strong>their reputations are on the line with every print.</strong> Accurate color, consistent output, print after print — the P-Series stays out of the way so the artist's vision reaches the paper intact.
+      </div>
+    </div>
+
+    <!-- Block 2: MicroPiezo (incorporates placed vs sprayed comparison) -->
+    <div class="content-block content-block--alt">
+      <div class="content-block__label">
+        Precision Ink<br>Placement
+      </div>
+      <div class="content-block__body">
+        Epson pioneered <strong>MicroPiezo® technology</strong>, using electrical pulses to <em>place</em> ink droplets — as small as <span class="highlight">1.5 picoliters</span> — 40,000 times per second. Other inkjet technologies use heat to boil and spray ink; their smallest dot is 4 picoliters, nearly three times larger. Placed ink produces smoother tonal transitions and finer detail — the difference between a photograph and a digital-looking print.
+      </div>
+    </div>
+
+    <!-- Block 3: UltraChrome PRO10 -->
+    <div class="content-block">
+      <div class="content-block__label">
+        Permanence<br>Without Compromise
+      </div>
+      <div class="content-block__body">
+        Epson's <strong>10-color UltraChrome® PRO10 ink set</strong> — with a dedicated Violet channel — reaches deeper into blues and purples that pigment inks have historically struggled to reproduce. The payoff is both gamut and longevity: display ratings up to <span class="highlight">200 years for color</span> and <span class="highlight">400 years for black-and-white</span>,<sup>1</sup> without sacrificing saturated colors or rich blacks.
+      </div>
+    </div>
+
+    <!-- Block 4: PrecisionCore -->
+    <div class="content-block content-block--alt">
+      <div class="content-block__label">
+        Reliable<br>by Design
+      </div>
+      <div class="content-block__body">
+        The <strong>PrecisionCore® Micro TFP printhead</strong> is built on Epson's heat-free piezo technology — no thermal stress means a permanent printhead designed to last the life of the printer, with fewer parts to maintain or replace. Dedicated Photo Black and Matte Black channels eliminate ink swapping between glossy and matte media, removing a step that slows production and wastes ink.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER — matches comparison tool disclaimer rendering pattern (Footer.js) -->
+  <!-- Paragraph 1: overridden (no number) — trademarks & general notices -->
+  <!-- Paragraph 2: auto-numbered — claim-specific disclaimers with superscript refs -->
+  <div class="footer">
+    <div class="footer__disclaimers">
+      <div class="footer__trademarks">
+        EPSON and SureColor are registered trademarks, and EPSON Exceed Your Vision is a registered logomark, of Seiko Epson Corporation. MicroPiezo, UltraChrome and PrecisionCore are registered trademarks of Epson. All other product and brand names are trademarks and/or registered trademarks of their respective companies. Specifications subject to change without notice.
+      </div>
+      <div class="footer__numbered">
+        <small><span class="symbol">1</span><span class="disclaimer-text">WIR lightfastness ratings are based on accelerated testing of prints on specified media, displayed indoors, under glass. Actual print stability will vary according to media, printed image, display conditions, light intensity, humidity and atmospheric conditions. Epson does not guarantee longevity of prints. For maximum print life, display all prints under glass or UV-absorbing acrylic and protect them from prolonged high-humidity environments. Visit wilhelm-research.com for the latest information.</span></small>
+      </div>
+    </div>
+    <div class="footer__logo">
+      <svg enable-background="new 0 0 445 100" viewBox="0 0 445 100" xmlns="http://www.w3.org/2000/svg"><g fill="#fff"><path d="m287.505 0c-28.145 0-44.394 21.092-44.394 50s16.249 50 44.394 50 44.394-21.092 44.394-50-16.249-50-44.394-50zm0 83.179c-17.877 0-24.771-16.456-24.771-33.179s6.894-33.182 24.771-33.182c17.874 0 24.771 16.459 24.771 33.182s-6.897 33.179-24.771 33.179z"/><path d="m0 2.802h70.547v16.824h-50.919v20.933h47.485v16.408h-47.485v23.402h50.919v16.826h-70.547z"/><path d="m78.954 97.195h19.623v-28.316h17.78c24.021 0 40.161-11.816 40.161-33.039 0-21.222-16.14-33.039-40.161-33.039h-37.403zm37.403-45.134h-17.78v-32.438l-.003-.003h17.783c12.334 0 20.539 5.371 20.539 16.22s-8.205 16.221-20.539 16.221z"/><path d="m359.475 2.802h-20.158v94.394h19.231v-38.239c0-10.451-.381-19.746-.733-27.948 2.269 4.722 9.149 18.922 12.345 24.256l25.029 41.93h20.144v-94.393h-19.228v37.285c0 10.454.38 20.702.73 28.903-2.269-4.722-9.146-18.922-12.348-24.256z"/><path d="m178.801 65.963c0 12.686 10.553 17.627 21.775 17.627 7.342 0 19.232-2.136 19.232-11.883 0-10.282-14.546-12.225-28.568-15.964-14.711-3.886-28.858-9.414-28.858-26.902 0-19.492 18.427-28.841 35.653-28.841 19.896 0 38.186 8.682 38.186 30.715h-19.623c-.67-11.484-9.478-14.423-19.493-14.423-6.685 0-15.1 2.803-15.1 10.817 0 7.34 4.798 8.482 28.703 14.626 6.942 1.734 28.723 5.935 28.723 27.567 0 17.491-13.748 30.578-39.663 30.578-21.095 0-40.857-10.414-40.589-33.917z"/><path d="m424.773 12.242c0-5.214 4.227-9.441 9.441-9.441s9.438 4.227 9.438 9.441-4.224 9.438-9.438 9.438-9.441-4.223-9.441-9.438zm9.441 10.383c5.735 0 10.382-4.647 10.382-10.382s-4.647-10.385-10.382-10.385-10.385 4.65-10.385 10.385c0 5.734 4.65 10.382 10.385 10.382z"/><path d="m435.21 11.965c1.079 0 2.015-.753 2.015-2.072 0-1.322-.936-2.075-2.015-2.075l-3.156-.003v10.505h-2.115v-12.156h5.271c2.501 0 4.13 1.648 4.13 3.729 0 1.814-1.339 3.194-2.753 3.425l3.394 5.002h-2.527l-4.078-6.356h1.834z"/></g></svg>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
