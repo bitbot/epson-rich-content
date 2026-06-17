@@ -1,0 +1,186 @@
+{
+  "product": {
+    "sku": "ET-2980U",
+    "name": "Epson EcoTank ET-2980U",
+    "fullName": "Epson EcoTank® ET-2980U Wireless All-in-One Supertank Printer",
+    "segment": "Home",
+    "readyPrintPrice": "$14.99"
+  },
+  "hero": {
+    "image": "assets/products/et-2980u-r4/hero.jpg",
+    "alt": "Epson EcoTank ET-2980U — Print Without Limits",
+    "ratio": 2.39925,
+    "paddingTop": "41.680%",
+    "bgPosition": "center"
+  },
+  "disclaimerStrip": {
+    "bgColor": "#011133",
+    "fgColor": "#ffffff",
+    "content": "*Unlimited Ink Replenishment. Use the Epson Genuine Ink supplied with your ReadyPrint subscription. Subject to the ReadyPrint Terms of Use and the functional limitations for the printer hardware (ET-2980U 2,000 pages/month, ET-3950U 2,100 pages/month, ET-5850U 8,300 pages/month, ET-16650U 8,300 pages/month). See epson.com/readyprint-terms. All Unlimited Printing Plans require a 2-year commitment and printers must remain connected to the Internet. Available in the Contiguous US only."
+  },
+  "carousels": [
+    {
+      "id": "readyprint",
+      "label": "ReadyPrint Benefits",
+      "slides": [
+        {
+          "navLabel": "Simple Print Plan",
+          "heading": "Simple 24-Month Print Plan",
+          "body": "One predictable monthly payment covers your printer, ink, and support",
+          "image": "assets/products/et-2980u-r4/rp-1-printplan.jpg",
+          "alt": "Simple 24-Month Print Plan",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Unlimited Color Printing",
+          "heading": "Unlimited Color Printing",
+          "body": "No monthly page limits, no overage fees, and no surprises",
+          "image": "assets/products/et-2980u-r4/rp-2-unlimitedcolor.jpg",
+          "alt": "Unlimited Color Printing",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Automatic Ink Delivery",
+          "heading": "Automatic Ink Delivery",
+          "body": "Worry-free printing. Free ink delivered before you need it. Skip the hassle of reordering ink",
+          "image": "assets/products/et-2980u-r4/rp-3-autoink.jpg",
+          "alt": "Automatic Ink Delivery",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Premium Support",
+          "heading": "Premium Support Included",
+          "body": "Continuous printer coverage with dedicated support specialists – including free full-unit-exchange",
+          "image": "assets/products/et-2980u-r4/rp-4-premiumsupport.jpg",
+          "alt": "Premium Support Included",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "label": "EcoTank Product Features",
+      "slides": [
+        {
+          "navLabel": "Affordable Color Printing",
+          "heading": "A Great Value in Color Printing",
+          "body": "EcoTank + ReadyPrint is quickly becoming one of the most popular print plans available today",
+          "image": "assets/products/et-2980u-r4/pf-1-affordablecolor.jpg",
+          "alt": "Affordable Color Printing",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Print Quality",
+          "heading": "True Photographic Print Quality",
+          "body": "Unique PrecisionCore<sup>®</sup> print technology for high resolution 4,800 x 1,200 dpi printing",
+          "image": "assets/products/et-2980u-r4/pf-2-precisioncore.jpg",
+          "alt": "Unique Epson PrecisionCore® Print Technology",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Reliable Design",
+          "heading": "Our Most Reliable EcoTank Ever",
+          "body": "Unique permanent printhead with pro-grade engineering delivers improved everyday reliability",
+          "image": "assets/products/et-2980u-r4/pf-3-reliabledesign.jpg",
+          "alt": "Our Most Reliable EcoTank Ever",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Modern Connectivity",
+          "heading": "Modern Connectivity",
+          "body": "Print directly from your computer or mobile device",
+          "image": "assets/products/et-2980u-r4/pf-4-modernconnectivity.jpg",
+          "alt": "Modern Connectivity",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        },
+        {
+          "navLabel": "Supertank Leader",
+          "heading": "The World's #1 Selling Supertank Printer",
+          "body": "With over 100 million sold worldwide<sup>1</sup>",
+          "image": "assets/products/et-2980u-r4/pf-5-supertankleader.jpg",
+          "alt": "The World's #1 Selling Supertank Printer",
+          "ratio": 2.39925,
+          "paddingTop": "41.680%",
+          "bgPosition": "center"
+        }
+      ]
+    }
+  ],
+  "hotspots": {
+    "compositeImage": "assets/products/et-2980u-r4/hotspot-composite.jpg",
+    "compositeAlt": "EcoTank ET-2980U — front and scanner views",
+    "points": [
+      {
+        "x": 0.86,
+        "y": 0.64,
+        "heading": "Uniquely Keyed EcoFit<sup>®</sup> Ink Bottles",
+        "body": "Makes refilling ink simple. No mess, no stress and no ink bottle mix-ups",
+        "popupImage": "assets/products/et-2980u-r4/hotspot-popup-1.jpg",
+        "popupAlt": "Uniquely Keyed EcoFit® Ink Bottles",
+        "position": "left"
+      },
+      {
+        "x": 0.42,
+        "y": 0.36,
+        "heading": "Wireless Mobile Printing",
+        "body": "Wirelessly print and scan from your PC or smart device<sup>2</sup>, including support for Apple<sup>®</sup> AirPrint<sup>®</sup>. Enjoy enhanced mobile printing from the Epson Smart Panel<sup>®</sup> App<sup>3</sup>",
+        "popupImage": "assets/products/et-2980u-r4/hotspot-popup-2.jpg",
+        "popupAlt": "Wireless Mobile Printing",
+        "position": "right"
+      },
+      {
+        "x": 0.15,
+        "y": 0.4,
+        "heading": "1.44\" Color Display",
+        "body": "Designed for simple navigation and printer management",
+        "popupImage": "assets/products/et-2980u-r4/hotspot-popup-3.jpg",
+        "popupAlt": "1.44\" Color Display",
+        "position": "right"
+      },
+      {
+        "x": 0.6,
+        "y": 0.39,
+        "heading": "Built-In Color Scanner & Copier",
+        "body": "Built-in high-resolution flatbed color scanner",
+        "popupImage": "assets/products/et-2980u-r4/hotspot-popup-4.jpg",
+        "popupAlt": "Built-In Color Scanner & Copier",
+        "position": "bottom"
+      },
+      {
+        "x": 0.66,
+        "y": 0.65,
+        "heading": "Stunning Print Quality",
+        "body": "Powered by Epson PrecisionCore<sup>®</sup> print technology, EcoTank<sup>®</sup> produces incredible photographic print quality from a recognized leader in photographic printing",
+        "popupImage": "assets/products/et-2980u-r4/hotspot-popup-5.jpg",
+        "popupAlt": "Stunning Print Quality",
+        "position": "top"
+      },
+      {
+        "x": 0.09,
+        "y": 0.66,
+        "heading": "Robust Paper Handling",
+        "body": "100-sheet paper input tray and auto 2-sided printing",
+        "popupImage": "assets/products/et-2980u-r4/hotspot-popup-6.jpg",
+        "popupAlt": "Robust Paper Handling",
+        "position": "top"
+      }
+    ]
+  },
+  "disclaimers": "<h3>Disclaimers</h3><span style=\"font-size:0.8333333333333334em;\"><b>1</b> Worldwide 2011 – 10/2024. | <b>2</b> Most features require an Internet connection to the printer, as well as an Internet- and/or email-enabled device. For a list of Epson Connect™ enabled printers and compatible devices and apps, visit www.epson.com/connect | <b>3</b> Requires Epson Smart Panel app download. Data usage fees may apply.</span>"
+}
