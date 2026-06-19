@@ -8,6 +8,7 @@
   },
   "hero": {
     "image": "assets/products/et-16650u-r3/hero.jpg",
+    "assetFilename": "ecotank_et-16650u-staples__hero.jpg",
     "alt": "Epson EcoTank Pro ET-16650U — Print Without Limits",
     "ratio": 2.39925,
     "paddingTop": "41.680%",
@@ -28,6 +29,7 @@
           "heading": "Simple 24-Month Print Plan",
           "body": "One predictable monthly payment covers your printer, ink, and support",
           "image": "assets/products/et-16650u-r3/rp-1-printplan.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_1_1-simple-24-month-print-plan.jpg",
           "alt": "Simple 24-Month Print Plan",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -38,6 +40,7 @@
           "heading": "Unlimited Color Printing",
           "body": "No monthly page limits, no overage fees, and no surprises",
           "image": "assets/products/et-16650u-r3/rp-2-unlimitedcolor.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_1_2-unlimited-color-printing.jpg",
           "alt": "Unlimited Color Printing",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -48,6 +51,7 @@
           "heading": "Automatic Ink Delivery",
           "body": "Worry-free printing. Free ink delivered before you need it. Skip the hassle of reordering ink",
           "image": "assets/products/et-16650u-r3/rp-3-autoink.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_1_3-automatic-ink-delivery.jpg",
           "alt": "Automatic Ink Delivery",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -58,6 +62,7 @@
           "heading": "Premium Support Included",
           "body": "Continuous printer coverage with dedicated support specialists – including free full-unit-exchange",
           "image": "assets/products/et-16650u-r3/rp-4-premiumsupport.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_1_4-premium-support-included.jpg",
           "alt": "Premium Support Included",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -74,6 +79,7 @@
           "heading": "A Great Value in Color Printing",
           "body": "EcoTank + ReadyPrint is quickly becoming one of the most popular print plans available today",
           "image": "assets/products/et-16650u-r3/pf-1-affordablecolor.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_2_1-a-great-value-in-color-printing.jpg",
           "alt": "Affordable 13\" x 19\" Color Printing",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -84,6 +90,7 @@
           "heading": "True Photographic Print Quality",
           "body": "Unique PrecisionCore<sup>®</sup> print technology for high resolution 4,800 x 1,200 dpi printing",
           "image": "assets/products/et-16650u-r3/pf-2-precisioncore.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_2_2-true-photographic-print-quality.jpg",
           "alt": "Unique Epson PrecisionCore® Print Technology",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -94,6 +101,7 @@
           "heading": "Our Most Reliable EcoTank Ever",
           "body": "Unique permanent printhead with pro-grade engineering delivers improved everyday reliability",
           "image": "assets/products/et-16650u-r3/pf-3-reliabledesign.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_2_3-our-most-reliable-ecotank-ever.jpg",
           "alt": "Our Most Reliable EcoTank Ever",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -104,6 +112,7 @@
           "heading": "Modern Connectivity",
           "body": "Print directly from your computer or mobile device",
           "image": "assets/products/et-16650u-r3/pf-4-modernconnectivity.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_2_4-modern-connectivity.jpg",
           "alt": "Modern Connectivity",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -114,6 +123,7 @@
           "heading": "The World's #1 Selling Supertank Printer",
           "body": "With over 100 million sold worldwide<sup>1</sup>",
           "image": "assets/products/et-16650u-r3/pf-5-supertankleader.jpg",
+          "assetFilename": "ecotank_et-16650u-staples_carousel_2_5-the-worlds-1-selling-supertank-printer.jpg",
           "alt": "The World's #1 Selling Supertank Printer",
           "ratio": 2.39925,
           "paddingTop": "41.680%",
@@ -124,6 +134,7 @@
   ],
   "hotspots": {
     "compositeImage": "assets/products/et-16650u-r3/hotspot-composite.jpg",
+    "compositeAssetFilename": "ecotank_et-16650u-staples_hotspot-desktop.jpg",
     "compositeAlt": "EcoTank Pro ET-16650U — product views",
     "points": [
       {
@@ -132,6 +143,7 @@
         "heading": "Uniquely Keyed EcoFit<sup>®</sup> Ink Bottles",
         "body": "Makes refilling ink simple. No mess, no stress and no ink bottle mix-ups",
         "popupImage": "assets/products/et-16650u-r3/hotspot-popup-1.jpg",
+        "assetFilename": "ecotank_et-16650u-staples_fg_hotspot_1ink-bottles.jpg",
         "popupAlt": "Uniquely Keyed EcoFit® Ink Bottles",
         "position": "right"
       },
@@ -141,6 +153,7 @@
         "heading": "Wireless Mobile Printing",
         "body": "Wirelessly print and scan from your PC or smart device<sup>2</sup>. Enjoy enhanced mobile printing from the Epson Smart Panel<sup>®</sup> App<sup>3</sup>",
         "popupImage": "assets/products/et-16650u-r3/hotspot-popup-2.jpg",
+        "assetFilename": "ecotank_et-16650u-staples_fg_hotspot_2mobile-printing.jpg",
         "popupAlt": "Wireless Mobile Printing",
         "position": "left"
       },
@@ -150,6 +163,7 @@
         "heading": "4.3\" Color Touchscreen Display",
         "body": "Designed for simple navigation and printer management",
         "popupImage": "assets/products/et-16650u-r3/hotspot-popup-3.jpg",
+        "assetFilename": "ecotank_et-16650u-staples_fg_hotspot_3display.jpg",
         "popupAlt": "4.3\" Color Touchscreen Display",
         "position": "right"
       },
@@ -159,6 +173,7 @@
         "heading": "Built-In Color Scanner & Copier",
         "body": "Built-in high-resolution flatbed color scanner, including a robust Auto Document Feeder for easy multiple-document scanning",
         "popupImage": "assets/products/et-16650u-r3/hotspot-popup-4.jpg",
+        "assetFilename": "ecotank_et-16650u-staples_fg_hotspot_4scanner-copier.jpg",
         "popupAlt": "Built-In Color Scanner & Copier",
         "position": "bottom"
       },
@@ -168,6 +183,7 @@
         "heading": "Stunning Print Quality",
         "body": "Powered by Epson PrecisionCore<sup>®</sup> print technology, EcoTank<sup>®</sup> produces incredible photographic print quality from a recognized leader in photographic printing",
         "popupImage": "assets/products/et-16650u-r3/hotspot-popup-5.jpg",
+        "assetFilename": "ecotank_et-16650u-staples_fg_hotspot_5print-quality.jpg",
         "popupAlt": "Stunning Print Quality",
         "position": "top"
       },
@@ -177,6 +193,7 @@
         "heading": "Robust Paper Handling",
         "body": "Dual High-Capacity 500-sheet paper input trays with auto 2-sided printing supporting paper sizes up to 13\" x 19\"",
         "popupImage": "assets/products/et-16650u-r3/hotspot-popup-6.jpg",
+        "assetFilename": "ecotank_et-16650u-staples_fg_hotspot_6paperhandling.jpg",
         "popupAlt": "Robust Paper Handling",
         "position": "top"
       }
