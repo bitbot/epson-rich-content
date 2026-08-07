@@ -32,3 +32,19 @@ Interactive features (carousels, hotspots, element queries) initialized via 1WS 
 1. Create `data/<sku>.json` following the existing schema
 2. Create `assets/products/<sku>/` with images
 3. Add entry to `PRODUCTS` array in `index.html`
+
+## Deploy gate
+
+This repo auto-deploys: the push in step 3 of the Content Workflow above is the deploy, so it is the last moment anything can be checked. `.githooks/pre-push` runs one check.
+
+**Secrets scan.** Only the lines **added** by the outgoing commits are scanned for credential-shaped strings (AWS key IDs, private-key blocks, GitHub/Neon/Cloudflare tokens, long literals assigned to password/secret/token/api_key names). Lockfiles are excluded; lines containing `example`, `placeholder`, `xxx`, or `REDACTED` are treated as illustrative. A hit prints the file, line, and pattern name — never the matched value — and blocks the push.
+
+There is **no test check**, because this repo has no test suite (vanilla HTML/CSS/JS, no build step). The gate does not pretend otherwise; a gate that claimed test coverage that does not exist would be worse than no gate. If a suite is added, add the check then.
+
+Arm it once per clone — `core.hooksPath` is local config that nothing in the repo can set for you:
+
+```bash
+git config core.hooksPath .githooks    # or: sh .githooks/install-hooks.sh
+```
+
+`git push --no-verify` skips the hook. That override exists on purpose, for the case where the gate is wrong — but nothing records that it was used, so **say so out loud** when you use it.

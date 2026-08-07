@@ -1,0 +1,217 @@
+#!/bin/sh
+# .githooks/pre-push — deploy gate for epson-rich-content.
+#
+# This repo auto-deploys to Cloudflare Pages on push, so the push is the last
+# moment anything can be checked. The gate runs ONE check:
+#
+#   1. Secrets scan — credential-shaped strings in the lines ADDED by the
+#      outgoing commits (never the whole tree).
+#
+# There is no test check here because this repo has NO test suite — it is a
+# vanilla HTML/CSS/JS site with no build step. A gate that pretended to run
+# tests would be worse than no gate: it would read as coverage that does not
+# exist. If a suite is ever added, add the check then.
+#
+# Enable once per clone (git cannot set core.hooksPath for you):
+#
+#   git config core.hooksPath .githooks
+#   # or: sh .githooks/install-hooks.sh
+#
+# Knowing human override: `git push --no-verify`. It exists on purpose, but a
+# push that used it should be said out loud — nothing else records that the
+# gate was skipped.
+#
+# POSIX sh, no bashisms — this runs under whatever sh git invokes hooks with.
+# Degradation rule: a MISSING TOOL warns and allows (an infrastructure problem
+# is not a failed check); a check that RUNS and FAILS blocks the push.
+
+set -eu
+
+HOOK_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$HOOK_DIR/.." && pwd)
+REMOTE_NAME=${1:-origin}
+
+warn() { echo "pre-push: $*" >&2; }
+
+TMPDIR_GATE=$(mktemp -d 2>/dev/null || mktemp -d -t prepush)
+trap 'rm -rf "$TMPDIR_GATE"' EXIT INT TERM
+
+STDIN_FILE="$TMPDIR_GATE/refs"
+RANGES="$TMPDIR_GATE/ranges"
+ADDED="$TMPDIR_GATE/added"
+SCANNABLE="$TMPDIR_GATE/scannable"
+: > "$RANGES"
+: > "$ADDED"
+
+# Read ALL of stdin first. The ref lines must be consumed before anything else
+# runs, or a test runner inheriting stdin swallows them.
+cat > "$STDIN_FILE"
+
+# ---------------------------------------------------------------------------
+# Outgoing range resolution
+#
+# git feeds pre-push "<local-ref> <local-sha> <remote-ref> <remote-sha>" lines.
+#   - local-sha all zeros  -> branch deletion, nothing to check.
+#   - remote-sha all zeros -> new remote branch; there is no "previous" state,
+#     so the base is the merge-base with the remote's default branch, or (if
+#     that is not resolvable) the parent of the oldest commit not reachable from
+#     any remote-tracking ref.
+#   - otherwise -> remote-sha is the base, when it exists locally.
+# An unresolvable or empty range allows: nothing verifiable is going out.
+# ---------------------------------------------------------------------------
+
+is_zero() {
+  case "$1" in
+    "") return 1 ;;
+    *[!0]*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+EMPTY_TREE=$(git hash-object -t tree /dev/null 2>/dev/null || echo "")
+
+remote_default_ref() {
+  for cand in \
+    "refs/remotes/$REMOTE_NAME/HEAD" \
+    "refs/remotes/$REMOTE_NAME/main" \
+    "refs/remotes/$REMOTE_NAME/master"
+  do
+    if git rev-parse --verify --quiet "$cand" >/dev/null 2>&1; then
+      printf '%s\n' "$cand"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Base for a tip that has no counterpart on the remote.
+fallback_base() {
+  tip=$1
+  base=""
+  if def=$(remote_default_ref); then
+    base=$(git merge-base "$def" "$tip" 2>/dev/null || true)
+  fi
+  if [ -z "$base" ]; then
+    first=$(git rev-list --reverse "$tip" --not --remotes 2>/dev/null | head -n 1 || true)
+    if [ -n "$first" ]; then
+      base=$(git rev-parse --verify --quiet "$first^" 2>/dev/null || true)
+      [ -n "$base" ] || base=$EMPTY_TREE
+    fi
+  fi
+  printf '%s\n' "$base"
+}
+
+while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA _rest || [ -n "${LOCAL_REF:-}" ]; do
+  [ -n "${LOCAL_SHA:-}" ] || continue
+  if is_zero "$LOCAL_SHA"; then continue; fi
+
+  BASE=""
+  if is_zero "${REMOTE_SHA:-}"; then
+    BASE=$(fallback_base "$LOCAL_SHA")
+  elif git cat-file -e "${REMOTE_SHA}^{commit}" 2>/dev/null; then
+    BASE=$REMOTE_SHA
+  else
+    BASE=$(fallback_base "$LOCAL_SHA")
+  fi
+
+  [ -n "$BASE" ] || continue
+  [ "$BASE" != "$LOCAL_SHA" ] || continue
+  printf '%s %s\n' "$BASE" "$LOCAL_SHA" >> "$RANGES"
+done < "$STDIN_FILE"
+
+if [ ! -s "$RANGES" ]; then
+  warn "no outgoing commits resolved — nothing to check."
+  exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# Secrets scan — ADDED lines only
+#
+# Conservative by design: it must prefer a miss to a false alarm, because a gate
+# that cries wolf gets --no-verify'd by reflex. Lockfiles are excluded (long
+# hashes, no secrets) and lines carrying example / placeholder / xxx / REDACTED
+# are treated as illustrative. Matched VALUES are never printed — only the file,
+# the line number, and which pattern fired.
+# ---------------------------------------------------------------------------
+
+for_each_range_diff() {
+  while read -r base tip; do
+    git diff --no-color --no-ext-diff --unified=0 "$base" "$tip" -- \
+      ':(exclude)*package-lock.json' \
+      ':(exclude)*npm-shrinkwrap.json' \
+      ':(exclude)*pnpm-lock.yaml' \
+      ':(exclude)*yarn.lock' \
+      ':(exclude)*composer.lock' \
+      ':(exclude)*poetry.lock' \
+      ':(exclude)*Cargo.lock' \
+      ':(exclude)*go.sum' \
+      2>/dev/null || true
+  done < "$RANGES"
+}
+
+# file <TAB> line-number-in-new-file <TAB> added content
+for_each_range_diff | awk '
+  /^\+\+\+ / { f = substr($0, 5); sub(/^b\//, "", f); next }
+  /^--- /    { next }
+  /^@@ /     { s = $3; sub(/^\+/, "", s); sub(/,.*/, "", s); ln = s + 0; next }
+  /^\+/      { print f "\t" ln "\t" substr($0, 2); ln++; next }
+' > "$ADDED" 2>/dev/null || true
+
+# Illustrative values are not credentials.
+grep -v -i -E -e 'example|placeholder|xxx|redacted' "$ADDED" > "$SCANNABLE" 2>/dev/null || true
+
+FINDINGS="$TMPDIR_GATE/findings"
+: > "$FINDINGS"
+
+# NOTE: every grep below passes its pattern with -e. A pattern that starts with
+# a dash (the private-key block header does) is otherwise parsed as options, and
+# grep fails silently behind the 2>/dev/null — a check that cannot fire.
+record_hits() { # name, grep-flags, regex
+  _name=$1
+  _flags=$2
+  _re=$3
+  grep $_flags -E -e "$_re" "$SCANNABLE" 2>/dev/null \
+    | awk -F'\t' -v n="$_name" '{ print $1 ":" $2 "  [" n "]" }' \
+    >> "$FINDINGS" || true
+}
+
+if [ -s "$SCANNABLE" ]; then
+  record_hits aws-access-key-id   ""   'AKIA[0-9A-Z]{16}'
+  record_hits private-key-block   ""   '-----BEGIN [A-Z ]*PRIVATE KEY'
+  record_hits github-token        ""   '(gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})'
+  record_hits neon-api-key        ""   'napi_[A-Za-z0-9]{24,}'
+  record_hits cloudflare-api-token "-i" '(cloudflare|cf)[a-z_]*(api)?_?(token|key)["'"'"']?[[:space:]]*[:=]{1,2}[[:space:]]*["'"'"']?[A-Za-z0-9_-]{30,}'
+
+  # High-entropy literal assigned to a credential-shaped name. Staged so the
+  # common non-secrets stay quiet: candidate -> not an env/template reference ->
+  # not a UUID -> the added text itself contains a digit (prose does not).
+  CRED_ASSIGN='(password|passwd|secret|token|api[_-]?key|apikey|access[_-]?key)["'"'"']?[[:space:]]*[:=]{1,2}[[:space:]]*["'"'"']?[A-Za-z0-9_+/=.~-]{25,}'
+  # A value that is an identifier PATH is a reference, not a literal. The last
+  # alternative catches the general form (workerEnv.DIRECTUS_V8_PASSWORD,
+  # c.env.API_TOKEN); it was added after a probe over 536 commits of bitbot-mcps
+  # history, where that shape was the ONLY false alarm the scan produced.
+  REFERENCE_NOISE='process\.env|import\.meta\.env|os\.environ|getenv|secrets\.|\$\{|\$\(|<%|\{\{|env\.[A-Z]|[A-Za-z_$][A-Za-z0-9_$]*\.[A-Z][A-Z0-9_]{4,}'
+  UUID='[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+  grep -i -E -e "$CRED_ASSIGN" "$SCANNABLE" 2>/dev/null \
+    | grep -v -E -e "$REFERENCE_NOISE" 2>/dev/null \
+    | grep -v -E -e "$UUID" 2>/dev/null \
+    | awk -F'\t' '$3 ~ /[0-9]/ { print $1 ":" $2 "  [credential-shaped-assignment]" }' \
+    >> "$FINDINGS" || true
+fi
+
+if [ -s "$FINDINGS" ]; then
+  echo "pre-push: secrets scan FAILED — push blocked." >&2
+  echo "Lines ADDED by the outgoing commits look like credentials." >&2
+  echo "(The matched values are deliberately not printed.)" >&2
+  echo "" >&2
+  sort -u "$FINDINGS" | while read -r line; do echo "    $line" >&2; done
+  echo "" >&2
+  echo "Remove the value, replace it with a placeholder, or move it to a secret" >&2
+  echo "store. If this is a false alarm, 'git push --no-verify' overrides — say" >&2
+  echo "so when you use it." >&2
+  exit 1
+fi
+
+echo "pre-push: secrets scan clean. Pushing." >&2
+exit 0
+
