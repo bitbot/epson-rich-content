@@ -149,3 +149,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# --- Bitbot cross-OS ignore baseline ---
+._*
+Thumbs.db
+Desktop.ini
+__pycache__/
+*.pyc
+.venv/
+.venv*/
+venv/
