@@ -1,7 +1,2 @@
 /p-series-overview /p-series-overview/index.html 200
-# Obfuscated share slugs for client-facing preview links (rewrites, not redirects —
-# the underlying path never appears in the browser). One line per share; keep slugs
-# stable so links in client email threads keep working.
-/p/pI269BzR1U /p-series-overview/r2/index.html 200
-/p/pI269BzR1U/ /p-series-overview/r2/index.html 200
 /* /index.html 200
